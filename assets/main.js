@@ -1,230 +1,375 @@
-// Generate random SVG lines for the background, with center point inside the SVG area
-// Only generate and show SVG lines after DOMContentLoaded to prevent flash
-window.addEventListener('DOMContentLoaded', () => {
-  const bgLinesSVG = document.getElementById('bg-lines');
-  if (bgLinesSVG) {
-    const numLines = 12;
-    let linesHTML = '';
-    for (let i = 0; i < numLines; i++) {
-      // Center point inside 0-100% for both x and y
-      const cx = (Math.random() * 100).toFixed(1);
-      const cy = (Math.random() * 100).toFixed(1);
-      // Random angle and even longer length
-      const angle = Math.random() * Math.PI * 2;
-      const len = 220 + Math.random() * 180; // Much longer lines
-      // Endpoints calculated from center
-      const x1 = (parseFloat(cx) + Math.cos(angle) * len/2).toFixed(1) + '%';
-      const y1 = (parseFloat(cy) + Math.sin(angle) * len/2).toFixed(1) + '%';
-      const x2 = (parseFloat(cx) - Math.cos(angle) * len/2).toFixed(1) + '%';
-      const y2 = (parseFloat(cy) - Math.sin(angle) * len/2).toFixed(1) + '%';
-      const width = (Math.random() * 0.8 + 1).toFixed(2);
-      linesHTML += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#e5e5e5" stroke-width="${width}"/>`;
+// ...existing code...
+
+window.addEventListener('load', function() {
+    const loader = document.getElementById('pageLoader');
+    if (loader) {
+        setTimeout(() => {
+            loader.classList.add('hidden');
+        }, 1500);
     }
-    bgLinesSVG.innerHTML = linesHTML;
-    // Add transition class for flying effect
-    bgLinesSVG.classList.add('bg-lines-fly');
-    // Hide and move lines off-screen initially to prevent flash
-    bgLinesSVG.style.opacity = '0';
-    bgLinesSVG.style.transform = 'scale(0.8) translateY(60px)';
-    // Animate SVG lines so all move in relation to the center, and scrolling impacts their movement
-    const svgLines = document.querySelectorAll('#bg-lines line');
-    let lastScrollY = window.scrollY || window.pageYOffset;
-    let scrollVelocity = 0;
-    let scrollMomentum = 0;
-    window.addEventListener('scroll', () => {
-      const newY = window.scrollY || window.pageYOffset;
-      scrollVelocity = newY - lastScrollY;
-      lastScrollY = newY;
+});
+
+window.addEventListener('scroll', function() {
+    const progressBar = document.getElementById('progressBar');
+    if (progressBar) {
+        const scrollTop = window.pageYOffset;
+        const docHeight = document.body.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+    }
+});
+
+const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
     });
-    svgLines.forEach((line, i) => {
-      const origX1 = parseFloat(line.getAttribute('x1'));
-      const origY1 = parseFloat(line.getAttribute('y1'));
-      const origX2 = parseFloat(line.getAttribute('x2'));
-      const origY2 = parseFloat(line.getAttribute('y2'));
-      function animateLine() {
-        const t = Date.now()/1200 + i*0.7;
-        // Scroll impact: accumulate momentum, decay over time (less twitchy)
-        // Clamp and round scrollVelocity to avoid jitter
-        let velocity = Math.round(scrollVelocity * 100) / 100;
-        if (Math.abs(velocity) < 0.2) velocity = 0;
-        scrollMomentum += (velocity * 0.10 - scrollMomentum) * 0.03;
-        scrollMomentum = Math.round(scrollMomentum * 1000) / 1000;
-        // Calculate offset from center for each endpoint
-        const dx1 = origX1 - 50;
-        const dy1 = origY1 - 50;
-        const dx2 = origX2 - 50;
-        const dy2 = origY2 - 50;
-        // Animate endpoints radially from center, add scrollMomentum to phase
-        const mag = 2 + 1.2*Math.sin(t*0.7 + i);
-        const phase = t + i*0.5 + scrollMomentum * 0.12;
-        const x1 = 50 + dx1 + Math.sin(phase) * dx1 * mag / 100;
-        const y1 = 50 + dy1 + Math.cos(phase) * dy1 * mag / 100;
-        const x2 = 50 + dx2 + Math.sin(phase+1) * dx2 * mag / 100;
-        const y2 = 50 + dy2 + Math.cos(phase+1) * dy2 * mag / 100;
-        line.setAttribute('x1', x1 + '%');
-        line.setAttribute('y1', y1 + '%');
-        line.setAttribute('x2', x2 + '%');
-        line.setAttribute('y2', y2 + '%');
-        requestAnimationFrame(animateLine);
-      }
-      animateLine();
+}, { threshold: 0.1 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // reveal animations
+    document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
     });
-  }
-});
-// Animate SVG lines so all move in relation to the center, and scrolling impacts their movement
-const svgLines = document.querySelectorAll('#bg-lines line');
-let lastScrollY = window.scrollY || window.pageYOffset;
-let scrollVelocity = 0;
-let scrollMomentum = 0;
-window.addEventListener('scroll', () => {
-  const newY = window.scrollY || window.pageYOffset;
-  scrollVelocity = newY - lastScrollY;
-  lastScrollY = newY;
-});
-svgLines.forEach((line, i) => {
-  const origX1 = parseFloat(line.getAttribute('x1'));
-  const origY1 = parseFloat(line.getAttribute('y1'));
-  const origX2 = parseFloat(line.getAttribute('x2'));
-  const origY2 = parseFloat(line.getAttribute('y2'));
-  function animateLine() {
-    const t = Date.now()/1200 + i*0.7;
-    // Scroll impact: accumulate momentum, decay over time
-    scrollMomentum += (scrollVelocity * 0.18 - scrollMomentum) * 0.08;
-    // Calculate offset from center for each endpoint
-    const dx1 = origX1 - 50;
-    const dy1 = origY1 - 50;
-    const dx2 = origX2 - 50;
-    const dy2 = origY2 - 50;
-    // Animate endpoints radially from center, add scrollMomentum to phase
-    const mag = 2 + 1.2*Math.sin(t*0.7 + i);
-    const phase = t + i*0.5 + scrollMomentum * 0.12;
-    const x1 = 50 + dx1 + Math.sin(phase) * dx1 * mag / 100;
-    const y1 = 50 + dy1 + Math.cos(phase) * dy1 * mag / 100;
-    const x2 = 50 + dx2 + Math.sin(phase+1) * dx2 * mag / 100;
-    const y2 = 50 + dy2 + Math.cos(phase+1) * dy2 * mag / 100;
-    line.setAttribute('x1', x1 + '%');
-    line.setAttribute('y1', y1 + '%');
-    line.setAttribute('x2', x2 + '%');
-    line.setAttribute('y2', y2 + '%');
-    requestAnimationFrame(animateLine);
-  }
-  animateLine();
-});
 
-// --- Flying transition for SVG lines on page switch ---
-function flyOutLines() {
-  const bg = document.getElementById('bg-lines');
-  if (bg) {
-    bg.style.transition = 'opacity 0.7s cubic-bezier(.7,0,.3,1), transform 0.7s cubic-bezier(.7,0,.3,1)';
-    bg.style.opacity = '0';
-    bg.style.transform += ' scale(1.2) translateY(-60px)';
-  }
-}
-function flyInLines() {
-  const bg = document.getElementById('bg-lines');
-  if (bg) {
-    bg.style.transition = 'none';
-    bg.style.opacity = '0';
-    bg.style.transform = 'scale(0.8) translateY(60px)';
-    setTimeout(() => {
-      bg.style.transition = 'opacity 0.9s cubic-bezier(.7,0,.3,1), transform 0.9s cubic-bezier(.7,0,.3,1)';
-      bg.style.opacity = '1';
-      bg.style.transform = 'scale(1) translateY(0)';
-    }, 30);
-  }
-}
-// On page load, fly in
-window.addEventListener('DOMContentLoaded', flyInLines);
-// Prevent scrolling above or below the page
-window.addEventListener('scroll', () => {
-  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-  if (window.scrollY < 0) {
-    window.scrollTo(0, 0);
-  } else if (window.scrollY > maxScroll) {
-    window.scrollTo(0, maxScroll);
-  }
-});
-// ...navigation click handler removed for native browser navigation and smooth scroll...
+    // contact overlay (improved)
+    const contactOverlay = document.getElementById('contactOverlay');
+    const contactClose = document.getElementById('contactClose');
+    let lastContactTrigger = null;
 
-// Fade-in on scroll for sections
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('fade-in');
+    function lockBodyScroll() {
+        document.body.style.overflow = 'hidden';
     }
-  });
-}, { threshold: 0.15 });
+    function unlockBodyScroll() {
+        document.body.style.overflow = '';
+    }
 
-document.querySelectorAll('section').forEach(section => {
-  section.classList.add('fade-init');
-  observer.observe(section);
+    function getFocusableWithin(container) {
+        if (!container) return [];
+        return Array.from(container.querySelectorAll('a[href],button,textarea,input,select,[tabindex]:not([tabindex="-1"])')).filter(el => !el.hasAttribute('disabled'));
+    }
+
+    function openContact() {
+        if (!contactOverlay) return;
+        lastContactTrigger = document.activeElement;
+        contactOverlay.classList.add('active');
+        contactOverlay.setAttribute('aria-hidden', 'false');
+    // mark main UI as hidden/inert for assistive tech
+    const main = document.querySelector('main');
+    const nav = document.querySelector('.nav-container');
+    if (main) main.setAttribute('aria-hidden', 'true');
+    if (nav) nav.setAttribute('aria-hidden', 'true');
+    document.body.classList.add('overlay-open');
+        lockBodyScroll();
+        // focus first focusable element (close button preferred)
+        const focusables = getFocusableWithin(contactOverlay);
+        if (focusables.length) focusables[0].focus();
+        contactOverlay.addEventListener('keydown', contactTrapFocus);
+    }
+
+    function closeContact() {
+        if (!contactOverlay) return;
+        contactOverlay.classList.remove('active');
+        contactOverlay.setAttribute('aria-hidden', 'true');
+    const main = document.querySelector('main');
+    const nav = document.querySelector('.nav-container');
+    if (main) main.removeAttribute('aria-hidden');
+    if (nav) nav.removeAttribute('aria-hidden');
+    document.body.classList.remove('overlay-open');
+        contactOverlay.removeEventListener('keydown', contactTrapFocus);
+        unlockBodyScroll();
+        if (lastContactTrigger && typeof lastContactTrigger.focus === 'function') lastContactTrigger.focus();
+    }
+
+    function contactTrapFocus(e) {
+        if (e.key !== 'Tab') return;
+        const focusable = getFocusableWithin(contactOverlay);
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault(); first.focus();
+        }
+    }
+
+    document.querySelectorAll('[data-contact-open]').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            lastContactTrigger = this;
+            openContact();
+        });
+    });
+
+    if (contactClose) contactClose.addEventListener('click', function() { closeContact(); });
+
+    if (contactOverlay) {
+        contactOverlay.addEventListener('click', function(e) {
+            if (e.target === contactOverlay) {
+                closeContact();
+            }
+        });
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeContact();
+            }
+        });
+    }
+
+    // Product modal: wired in products.html
+    const modal = document.getElementById('productModal');
+    const modalClose = document.getElementById('productModalClose');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalHighlights = document.getElementById('modal-highlights');
+    const modalImage = document.getElementById('modal-image');
+    const modalLive = document.getElementById('modal-live');
+    const modalSource = document.getElementById('modal-source');
+    let lastFocused = null;
+
+    const PRODUCTS = {
+        p1: {
+            title: 'Rapid Forms',
+            desc: 'Rapid Forms is a compact, accessible form builder designed for designers and small teams. Exports HTML/CSS with best-practice validation and ARIA-ready markup.',
+            highlights: ['Accessible by default (labels, errors, keyboard)', 'Export presets: Bootstrap / Plain HTML', 'Zero-dependency JS validation rules'],
+            live: '#',
+            source: '#'
+        },
+        p2: {
+            title: 'TeamBoard',
+            desc: 'TeamBoard offers real-time collaboration with presence indicators, undo history, and lightweight permissioning for project teams.',
+            highlights: ['Realtime sync (WebSocket)', 'Role-based permissions', 'Exportable activity logs'],
+            live: '#',
+            source: '#'
+        },
+        p3: {
+            title: 'WeatherViz',
+            desc: 'WeatherViz combines tidy interactive charts with exportable graphics for reports and presentations. Built for data storytellers.',
+            highlights: ['D3.js powered visualizations', 'Preset chart templates', 'SVG / PNG export options'],
+            live: '#',
+            source: '#'
+        }
+    };
+
+    function openModal(productId) {
+        const data = PRODUCTS[productId];
+        if (!data || !modal) return;
+        lastFocused = document.activeElement;
+
+        modalTitle.textContent = data.title;
+        modalDesc.textContent = data.desc;
+        modalHighlights.innerHTML = '';
+        // populate modal image if available
+        if (modalImage) {
+            modalImage.setAttribute('src', `assets/images/${productId}-thumb.svg`);
+            modalImage.setAttribute('alt', data.title + ' thumbnail');
+            modalImage.style.display = '';
+        }
+        data.highlights.forEach(h => {
+            const li = document.createElement('li');
+            li.textContent = h;
+            modalHighlights.appendChild(li);
+        });
+        modalLive.setAttribute('href', data.live);
+        modalSource.setAttribute('href', data.source);
+
+        try {
+            if (typeof modal.showModal === 'function') {
+                modal.showModal();
+            } else {
+                modal.classList.add('open');
+                modal.setAttribute('aria-hidden', 'false');
+            }
+        } catch (e) {
+            modal.classList.add('open');
+            modal.setAttribute('aria-hidden', 'false');
+        }
+
+        // trap focus simply
+        modal.addEventListener('keydown', trapFocus);
+        if (modalClose) modalClose.focus();
+    }
+
+    function closeModal() {
+        if (!modal) return;
+        // clear modal image
+        if (modalImage) {
+            modalImage.removeAttribute('src');
+            modalImage.setAttribute('alt', '');
+            modalImage.style.display = 'none';
+        }
+        try { if (typeof modal.close === 'function') modal.close(); } catch (e) { modal.classList.remove('open'); }
+        modal.setAttribute('aria-hidden', 'true');
+        modal.removeEventListener('keydown', trapFocus);
+        if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    }
+
+    function trapFocus(e) {
+        if (e.key !== 'Tab') return;
+        const focusable = modal.querySelectorAll('a[href],button,textarea,input,select,[tabindex]:not([tabindex="-1"])');
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault(); first.focus();
+        }
+    }
+
+    document.querySelectorAll('[data-open-product]').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const id = this.getAttribute('data-product-id');
+            openModal(id);
+        });
+    });
+
+    if (modalClose) modalClose.addEventListener('click', closeModal);
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeModal();
+        });
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+    }
+
+    // smooth anchors
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+    // Register service worker for PWA (if supported)
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').then(reg => {
+            console.log('Service worker registered:', reg.scope);
+            // listen for updates
+            if (reg.waiting) {
+                showUpdateUI(reg);
+            }
+            reg.addEventListener('updatefound', () => {
+                const newWorker = reg.installing;
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        showUpdateUI(reg);
+                    }
+                });
+            });
+        }).catch(err => {
+            console.warn('SW registration failed:', err);
+        });
+    }
+
+    function showUpdateUI(reg) {
+        if (document.getElementById('sw-update')) return;
+        const bar = document.createElement('div');
+        bar.id = 'sw-update';
+        bar.style.position = 'fixed';
+        bar.style.left = '50%';
+        bar.style.transform = 'translateX(-50%)';
+        bar.style.bottom = '18px';
+        bar.style.background = 'linear-gradient(90deg,#111, #222)';
+        bar.style.color = '#fff';
+        bar.style.padding = '12px 16px';
+        bar.style.borderRadius = '8px';
+        bar.style.boxShadow = '0 6px 30px rgba(0,0,0,.6)';
+        bar.style.zIndex = '999999';
+        bar.style.display = 'flex';
+        bar.style.gap = '8px';
+        bar.style.alignItems = 'center';
+        bar.innerHTML = '<span style="font-size:14px;">A new version is available</span>';
+        const btn = document.createElement('button');
+        btn.textContent = 'Refresh';
+        btn.className = 'btn btn-primary';
+        btn.style.marginLeft = '8px';
+        const dismiss = document.createElement('button');
+        dismiss.textContent = 'Dismiss';
+        dismiss.className = 'btn btn-secondary';
+        dismiss.style.marginLeft = '8px';
+        // refresh action
+        btn.addEventListener('click', () => {
+            if (!reg || !reg.waiting) return;
+            reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            btn.disabled = true; btn.textContent = 'Refreshing...';
+            setTimeout(() => location.reload(true), 800);
+        });
+        // dismiss action
+        dismiss.addEventListener('click', () => {
+            bar.style.transition = 'opacity .4s ease, transform .4s ease';
+            bar.style.opacity = '0';
+            bar.style.transform = 'translateY(12px) translateX(-50%)';
+            setTimeout(() => { if (bar.parentNode) bar.parentNode.removeChild(bar); }, 420);
+        });
+        bar.appendChild(btn);
+        bar.appendChild(dismiss);
+        bar.style.opacity = '0';
+        bar.style.transform = 'translateY(12px) translateX(-50%)';
+        document.body.appendChild(bar);
+        requestAnimationFrame(() => { bar.style.transition = 'opacity .4s ease, transform .4s ease'; bar.style.opacity = '1'; bar.style.transform = 'translateY(0) translateX(-50%)'; });
+    }
+
+    // Netlify form AJAX fallback (useful for local dev)
+    const forms = document.querySelectorAll('form[name="contact"]');
+    forms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            // If running on localhost, prevent default and POST to Netlify dev endpoint or a test endpoint
+            if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+                e.preventDefault();
+                const data = new FormData(form);
+                fetch('/', { method: 'POST', body: data }).then(() => {
+                    alert('Message sent (local test). On deploy this will submit to Netlify Forms.');
+                    form.reset();
+                }).catch(err => {
+                    alert('Local send failed — when deployed Netlify Forms will handle submission.');
+                    console.error(err);
+                });
+            }
+        });
+    });
+
+    // Inject JSON-LD for Organization/Product pages (if not present)
+    if (!document.querySelector('script[type="application/ld+json"]')) {
+        const ld = {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Samuel Wu",
+            "url": window.location.origin,
+            "logo": window.location.origin + '/images/Icon.jpg'
+        };
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.innerText = JSON.stringify(ld);
+        document.head.appendChild(s);
+    }
 });
 
+// active nav highlighting
+window.addEventListener('scroll', function() {
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        if (window.pageYOffset >= sectionTop) {
+            current = section.getAttribute('id');
+        }
+    });
 
-
-
-// Theme switcher with auto-detect
-const themes = ['', 'theme-dark'];
-let themeIndex = 0;
-const themeBtn = document.getElementById('theme-toggle');
-const themeIcon = document.getElementById('theme-icon');
-
-// SVGs for sun and moon
-const sunSVG = `<svg class="theme-svg sun" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor"><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></g></svg>`;
-const moonSVG = `<svg class="theme-svg moon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 0 1 12.21 3a7 7 0 1 0 8.79 9.79z" fill="currentColor"/></svg>`;
-
-if (themeIcon) {
-  themeIcon.innerHTML = `<span class="theme-svg-wrap" style="position:relative;display:inline-block;width:28px;height:28px;vertical-align:middle;">
-    <span id="theme-sun" style="position:absolute;top:0;left:0;right:0;bottom:0;opacity:1;transition:opacity 0.4s;">${sunSVG}</span>
-    <span id="theme-moon" style="position:absolute;top:0;left:0;right:0;bottom:0;opacity:0;transition:opacity 0.4s;">${moonSVG}</span>
-  </span>`;
-}
-// Auto-detect system theme
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  document.body.className = 'theme-dark';
-  themeIndex = 1;
-  const sun = document.getElementById('theme-sun');
-  const moon = document.getElementById('theme-moon');
-  if (sun && moon) {
-    sun.style.opacity = 0;
-    moon.style.opacity = 1;
-  }
-}
-if (themeBtn) {
-  themeBtn.addEventListener('click', () => {
-    themeIndex = (themeIndex+1)%themes.length;
-    document.body.className = themes[themeIndex];
-    const sun = document.getElementById('theme-sun');
-    const moon = document.getElementById('theme-moon');
-    if (themeIndex === 1) { // dark
-      if (sun && moon) {
-        sun.style.opacity = 0;
-        moon.style.opacity = 1;
-      }
-    } else { // light
-      if (sun && moon) {
-        sun.style.opacity = 1;
-        moon.style.opacity = 0;
-      }
-    }
-  });
-}
-
-
-
-// Smooth momentum effect for SVG lines on scroll
-const bgLines = document.getElementById('bg-lines');
-let targetScrollY = window.scrollY || window.pageYOffset;
-let currentScrollY = targetScrollY;
-function animateBgLines() {
-  targetScrollY = window.scrollY || window.pageYOffset;
-  // Approach the target scroll position with less bounce (lower factor)
-  currentScrollY += (targetScrollY - currentScrollY) * 0.07;
-  if (bgLines) {
-    bgLines.style.transition = 'none';
-    bgLines.style.transform = `translateY(${currentScrollY * 0.18}px)`;
-  }
-  requestAnimationFrame(animateBgLines);
-}
-animateBgLines();
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+});
 

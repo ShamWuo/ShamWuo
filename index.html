@@ -3,103 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samuel Wu — Portfolio</title>
+    <title>Samuel Wu — Creative Developer</title>
+    <meta name="description" content="Portfolio of Samuel Wu — Full‑Stack Web & Game Developer. Projects, skills, and contact.">
+    <meta property="og:title" content="Samuel Wu — Creative Developer">
+    <meta property="og:description" content="Full‑Stack Web & Game Developer. Projects, skills, and contact.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="images/moon.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Samuel Wu — Creative Developer">
+    <meta name="twitter:description" content="Full‑Stack Web & Game Developer. Projects, skills, and contact.">
+    <link rel="icon" href="images/moon.png" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="images/moon.png">
+    <!-- Access gate removed for local/dev preview -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="preload" href="assets/style.min.css" as="style">
+    <link rel="stylesheet" href="assets/style.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0b0b0b">
+        <!-- Critical CSS (inlined for faster first paint) -->
+        <style>
+            .nav{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;height:70px}
+            .nav-container{position:fixed;top:0;left:0;right:0;padding:0 2rem}
+            .hero{padding-top:120px;text-align:center}
+            .hero-title{font-size:clamp(2.5rem,8vw,5rem);font-weight:300}
+        </style>
+        <link rel="preload" href="assets/main.js" as="script">
 </head>
-<body>
-    <!-- Minimalist animated SVG background -->
-    <svg id="bg-lines" width="100%" height="100%" style="position:fixed;top:0;left:0;z-index:0;pointer-events:none;" aria-hidden="true"></svg>
-    <header>
-        <div class="container">
-            <h1>Samuel Wu</h1>
-            <nav>
-                <a href="index.html#about">About</a>
-                <a href="index.html#projects">Projects</a>
-                <a href="products.html">Products</a>
-                <a href="contact.html">Contact</a>
-            </nav>
-            <button id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
-                <span id="theme-icon">🌗</span>
-            </button>
-        </div>
-    </header>
-    <main style="position:relative;z-index:1;">
-        <section id="about" class="container">
-            <h2>About</h2>
-            <p>
-                Hi, I'm Samuel Wu, a developer and designer passionate about building elegant, performant, and accessible experiences. I love blending technology and creativity to solve real-world problems and create delightful user interfaces.
-            </p>
-            <ul style="font-size:1.1rem;line-height:2;margin-top:1.5rem;">
-                <li>🌱 Always learning new technologies and design trends</li>
-                <li>💡 Interested in web, UI/UX, and creative coding</li>
-                <li>🎨 Enjoy minimalist, modern aesthetics</li>
-                <li>🤝 Open to collaborations and freelance work</li>
-            </ul>
-        </section>
+    <body>
+    <a class="skip-link" href="#home">Skip to content</a>
+        <div class="bg-stars"></div>
+        <div class="bg-stars layer-2"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-waves">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+    
+    <div class="bg-shapes">
+        <div class="shape shape-triangle"></div>
+        <div class="shape shape-circle"></div>
+        <div class="shape shape-square"></div>
+    </div>
 
-        <section id="skills" class="container">
-            <h2>Skills</h2>
-            <ul style="font-size:1.1rem;line-height:2;columns:2;max-width:600px;margin:0 auto;">
-                <li>JavaScript / TypeScript</li>
-                <li>HTML &amp; CSS</li>
-                <li>React / Next.js</li>
-                <li>Node.js</li>
-                <li>UI/UX Design</li>
-                <li>Figma / Adobe XD</li>
-                <li>Python</li>
-                <li>Git &amp; GitHub</li>
-            </ul>
-        </section>
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-text">Loading portfolio...</div>
+    </div>
 
-        <section id="timeline" class="container">
-            <h2>Timeline</h2>
-            <ul style="font-size:1.1rem;line-height:2;max-width:600px;margin:0 auto;">
-                <li><strong>2025</strong> — Portfolio redesign and new projects</li>
-                <li><strong>2024</strong> — Freelance web development &amp; design</li>
-                <li><strong>2023</strong> — Launched first SaaS product</li>
-                <li><strong>2022</strong> — Started creative coding journey</li>
-            </ul>
-        </section>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
 
-        <section id="projects" class="container">
-            <h2>Projects</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <h3>SMmf</h3>
-                    <p>Social media management tool for creators.</p>
-                </div>
-                <div class="project-card">
-                    <h3>Formal</h3>
-                    <p>Minimal UI, maximum impact. A design system for fast prototyping.</p>
-                </div>
-                <div class="project-card">
-                    <h3>dg</h3>
-                    <p>Simple, clear, and fast static site generator.</p>
-                </div>
-                <div class="project-card">
-                    <h3>Portfolio Template</h3>
-                    <p>Open-source minimalist portfolio template for developers.</p>
-                </div>
-                <div class="project-card">
-                    <h3>ColorLab</h3>
-                    <p>Interactive color palette generator for designers.</p>
-                </div>
-                <div class="project-card">
-                    <h3>CodeArt</h3>
-                    <p>Creative coding playground for generative art.</p>
+    <div class="nav-container">
+        <nav class="nav">
+            <div class="nav-left">
+                <a href="#home" class="logo">Samuel Wu</a>
+                <ul class="nav-links">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#skills" class="nav-link">Skills</a></li>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
+                </ul>
+                <a href="#" class="btn btn-secondary" data-contact-open>Get In Touch</a>
+            </div>
+            <div class="nav-right">
+                <div class="page-nav">
+                    <a href="index.html" class="page-nav-link">Home</a>
+                    <a href="#" class="page-nav-link" data-contact-open>Contact</a>
                 </div>
             </div>
-        </section>
-        <!-- Contact section moved to contact.html -->
-    </main>
-    <footer>
-        <div class="container" style="position:relative;z-index:1;">
-            <span>&copy; 2025 Samuel Wu</span>
+        </nav>
+    </div>
+
+    <div class="contact-overlay" id="contactOverlay">
+        <div class="color-wave"></div>
+        <div class="color-wave"></div>
+        <div class="color-wave"></div>
+        <div class="color-wave"></div>
+        <div class="color-wave"></div>
+        <div class="color-wave"></div>
+        
+        <button class="contact-close" id="contactClose">×</button>
+        
+        <div class="contact-content">
+            <h1 class="hero-title">Get In Touch</h1>
+            <p class="hero-subtitle">Let's create something amazing together</p>
+            
+            <div class="contact-info">
+                <p>Ready to bring your vision to life? I'd love to hear from you.</p>
+                <p>
+                    <strong>Email:</strong> 
+                    <a href="mailto:samuel@example.com">samuel@example.com</a>
+                </p>
+                <p>
+                    <strong>LinkedIn:</strong> 
+                    <a href="https://linkedin.com/in/samuelwu" target="_blank" rel="noopener">linkedin.com/in/samuelwu</a>
+                </p>
+                <p>
+                    <strong>GitHub:</strong> 
+                    <a href="https://github.com/samuelwu" target="_blank" rel="noopener">github.com/samuelwu</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <section id="home" class="hero section">
+        <div class="container">
+            <div class="hero-content fade-in">
+                <h1 class="hero-title">Samuel Wu</h1>
+                <p class="hero-subtitle">Full-Stack Web & Game Developer</p>
+                <p class="hero-description"> 
+                    Designing innovative digital experiences for impactful user journeys.                    
+                </p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">View My Work</a>
+                    <a href="#" class="btn btn-secondary" data-contact-open>Get In Touch</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section fade-in">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-subtitle">Get to know me</p>
+                <h2 class="section-title">About Me</h2>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        Hi, I'm Sam—an enthusiastic full‑stack and game developer. I turn complex problems into simple, intuitive solutions and learn from setbacks.
+                    </p>
+                    <p>
+                        I've been continually learning and evolving with the ever‑changing landscape of technology. I value clean, efficient code and seamless user experiences.
+                    </p>
+                    <p>
+                        When I'm not coding, you can find me exploring new design trends, contributing to 
+                        open-source projects, or enjoying a good cup of coffee while sketching new ideas.
+                    </p>
+                </div>
+                
+                <div class="about-image">
+                    <img src="images/moon.png" alt="Portrait placeholder" loading="lazy" decoding="async">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="section fade-in">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-subtitle">What I do</p>
+                <h2 class="section-title">Skills & Technologies</h2>
+            </div>
+            
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Frontend Development</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Vue.js</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">HTML5</span>
+                        <span class="skill-tag">CSS3</span>
+                        <span class="skill-tag">Sass</span>
+                        <span class="skill-tag">Tailwind CSS</span>
+                        <span class="skill-tag">Lua</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h3>Backend Development</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Django</span>
+                        <span class="skill-tag">PostgreSQL</span>
+                        <span class="skill-tag">MongoDB</span>
+                        <span class="skill-tag">Redis</span>
+                        <span class="skill-tag">GraphQL</span>
+                    </div>
+                </div>
+               <!-- 
+                <div class="skill-category">
+                    <h3>Tools & Technologies</h3>
+                    <div class="skill-tags">
+                        span class="skill-tag">Git</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">Vercel</span>
+                        <span class="skill-tag">Figma</span>
+                        <span class="skill-tag">Webpack</span>
+                        <span class="skill-tag">Jest</span>
+                        <span class="skill-tag">Cypress</span> 
+                    </div> for later-->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="section fade-in">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-subtitle">My work</p>
+                <h2 class="section-title">Featured Projects</h2>
+            </div>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <span>E-Commerce Platform</span>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">E-Commerce Platform</h3>
+                        <p class="project-description">
+                            A full-stack e-commerce solution with React frontend, Node.js backend, 
+                            and Stripe integration. Features include user authentication, shopping cart, 
+                            and admin dashboard.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">MongoDB</span>
+                            <span class="tech-tag">Stripe</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">Live Demo</a>
+                            <a href="#" class="project-link">Source Code</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">
+                        <span>Task Management App</span>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Task Management App</h3>
+                        <p class="project-description">
+                            A collaborative task management application with real-time updates, 
+                            drag-and-drop functionality, and team collaboration features.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Vue.js</span>
+                            <span class="tech-tag">Socket.io</span>
+                            <span class="tech-tag">Express</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">Live Demo</a>
+                            <a href="#" class="project-link">Source Code</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">
+                        <span>Weather Dashboard</span>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Weather Dashboard</h3>
+                        <p class="project-description">
+                            A responsive weather dashboard with interactive charts, location-based 
+                            forecasts, and beautiful data visualizations using D3.js.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">TypeScript</span>
+                            <span class="tech-tag">D3.js</span>
+                            <span class="tech-tag">REST API</span>
+                            <span class="tech-tag">CSS Grid</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">Live Demo</a>
+                            <a href="#" class="project-link">Source Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Samuel Wu. All rights reserved.</p>
         </div>
     </footer>
-    <script src="assets/main.js"></script>
+
+    <script src="assets/main.js" defer></script>
 </body>
 </html>

@@ -4,47 +4,201 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Samuel Wu — Products</title>
+    <meta name="description" content="Products by Samuel Wu — tools and projects built for the web.">
+    <meta property="og:title" content="Samuel Wu — Products">
+    <meta property="og:description" content="Explore products built by Samuel Wu.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="images/moon.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Samuel Wu — Products">
+    <meta name="twitter:description" content="Explore products built by Samuel Wu.">
+    <link rel="icon" href="images/moon.png" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="images/moon.png">
+    <!-- Access gate removed for local/dev preview -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="preload" href="assets/style.min.css" as="style">
+    <link rel="stylesheet" href="assets/style.min.css">
+        <link rel="manifest" href="manifest.json">
+        <meta name="theme-color" content="#0b0b0b">
+        <script type="application/ld+json">
+        {
+            "@context":"https://schema.org",
+            "@type":"Organization",
+            "name":"Samuel Wu",
+            "url":"https://example.com",
+            "logo":"/images/moon.png"
+        }
+        </script>
 </head>
-<body>
-    <svg id="bg-lines" width="100%" height="100%" style="position:fixed;top:0;left:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 0.8s;" aria-hidden="true"></svg>
-    <header>
-        <div class="container">
-            <h1>Samuel Wu</h1>
-            <nav>
-                <a href="index.html#about">About</a>
-                <a href="index.html#projects">Projects</a>
-                <a href="products.html">Products</a>
-                <a href="contact.html">Contact</a>
-            </nav>
-            <button id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
-                <span id="theme-icon"></span>
-            </button>
-        </div>
-    </header>
-    <main style="position:relative;z-index:1;">
-        <section class="container">
-            <h2>Products</h2>
-            <div class="products-grid">
-                <div class="product-card">
-                    <h3>Product One</h3>
-                    <p>Short description of your first product. Highlight features and value.</p>
-                    <a href="#" class="product-link">Learn More</a>
-                </div>
-                <div class="product-card">
-                    <h3>Product Two</h3>
-                    <p>Short description of your second product. Highlight features and value.</p>
-                    <a href="#" class="product-link">Learn More</a>
-                </div>
-                <div class="product-card">
-                    <h3>Product Three</h3>
-                    <p>Short description of your third product. Highlight features and value.</p>
-                    <a href="#" class="product-link">Learn More</a>
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
+        <div class="bg-stars"></div>
+        <div class="bg-stars layer-2"></div>
+    <div class="bg-grid"></div>
+    <div class="nav-container">
+        <nav class="nav">
+            <div class="nav-left">
+                <a href="index.html#home" class="logo">Samuel Wu</a>
+                <ul class="nav-links">
+                    <li><a href="index.html#home" class="nav-link">Home</a></li>
+                    <li><a href="index.html#about" class="nav-link">About</a></li>
+                    <li><a href="index.html#skills" class="nav-link">Skills</a></li>
+                    <li><a href="index.html#projects" class="nav-link">Projects</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+                <div class="page-nav">
+                    <a href="index.html" class="page-nav-link">Home</a>
+                    <a href="products.html" class="page-nav-link active">Products</a>
                 </div>
             </div>
+        </nav>
+    </div>
+
+    <main id="main" class="page-content" style="position:relative;z-index:1;">
+        <section class="container" aria-labelledby="products-heading">
+            <h2 id="products-heading">Products</h2>
+            <p class="section-subtitle" style="margin-top:.5rem;">Selected web tools and projects with concise value propositions and links to demos or documentation.</p>
+            <div class="products-grid" role="list">
+                <article class="product-card" role="listitem" tabindex="0" aria-labelledby="p1-title" aria-describedby="p1-desc">
+                    <h3 id="p1-title">Product One — Rapid Forms</h3>
+                    <p id="p1-desc">A lightweight, accessible form builder that exports production-ready HTML and validation rules. Built for designers who want clean markup fast.</p>
+                    <div style="display:flex;gap:0.75rem;align-items:center;margin-top:.75rem;">
+                        <a href="#" class="product-link" data-open-product data-product-id="p1">Learn More</a>
+                        <a href="#" class="product-link" aria-label="Open Product One demo">Live Demo</a>
+                    </div>
+                </article>
+                <div class="product-card" role="listitem">
+                    <button class="product-image" aria-label="Open Rapid Forms" data-open-product data-product-id="p1">
+                        <picture>
+                            <source type="image/webp" srcset="assets/images/p1-thumb.webp">
+                            <source type="image/png" srcset="assets/images/p1-thumb.png">
+                            <source type="image/svg+xml" srcset="assets/images/p1-thumb.svg">
+                            <img src="assets/images/p1-thumb.png" alt="Rapid Forms thumbnail" width="240" height="160" loading="lazy" decoding="async">
+                        </picture>
+                    </button>
+                    <div class="product-content">
+                        <h3 class="product-title">Rapid Forms</h3>
+                        <p class="product-description">
+                            Rapid Forms is a compact, accessible form builder designed for designers and small teams. Exports HTML/CSS with best-practice validation and ARIA-ready markup.
+                        </p>
+                        <div class="product-tech">
+                            <span class="tech-tag">Accessible</span>
+                            <span class="tech-tag">HTML</span>
+                            <span class="tech-tag">Zero‑JS</span>
+                        </div>
+                        <div class="product-links">
+                            <a href="#" class="product-link">Live Demo</a>
+                            <a href="#" class="product-link">Source Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <article class="product-card" role="listitem" tabindex="0" aria-labelledby="p2-title" aria-describedby="p2-desc">
+                    <h3 id="p2-title">Product Two — TeamBoard</h3>
+                    <p id="p2-desc">Collaborative task board with presence indicators, versioned history, and real-time sync for small teams and startups.</p>
+                    <div style="display:flex;gap:0.75rem;align-items:center;margin-top:.75rem;">
+                        <a href="#" class="product-link" data-open-product data-product-id="p2">Learn More</a>
+                        <a href="#" class="product-link" aria-label="Open Product Two demo">Live Demo</a>
+                    </div>
+                </article>
+                <div class="product-card" role="listitem">
+                    <button class="product-image" aria-label="Open TeamBoard" data-open-product data-product-id="p2">
+                        <picture>
+                            <source type="image/webp" srcset="assets/images/p2-thumb.webp">
+                            <source type="image/png" srcset="assets/images/p2-thumb.png">
+                            <source type="image/svg+xml" srcset="assets/images/p2-thumb.svg">
+                            <img src="assets/images/p2-thumb.png" alt="TeamBoard thumbnail" width="240" height="160" loading="lazy" decoding="async">
+                        </picture>
+                    </button>
+                    <div class="product-content">
+                        <h3 class="product-title">TeamBoard</h3>
+                        <p class="product-description">
+                            TeamBoard offers real-time collaboration with presence indicators, undo history, and lightweight permissioning for project teams.
+                        </p>
+                        <div class="product-tech">
+                            <span class="tech-tag">Realtime</span>
+                            <span class="tech-tag">Node</span>
+                            <span class="tech-tag">Socket</span>
+                        </div>
+                        <div class="product-links">
+                            <a href="#" class="product-link">Live Demo</a>
+                            <a href="#" class="product-link">Source Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <article class="product-card" role="listitem" tabindex="0" aria-labelledby="p3-title" aria-describedby="p3-desc">
+                    <h3 id="p3-title">Product Three — WeatherViz</h3>
+                    <p id="p3-desc">Interactive weather dashboard and visualization toolkit with chart presets and exportable SVGs for data storytelling.</p>
+                    <div style="display:flex;gap:0.75rem;align-items:center;margin-top:.75rem;">
+                        <a href="#" class="product-link" data-open-product data-product-id="p3">Learn More</a>
+                        <a href="#" class="product-link" aria-label="Open Product Three demo">Live Demo</a>
+                    </div>
+                </article>
+                <div class="product-card" role="listitem">
+                    <button class="product-image" aria-label="Open WeatherViz" data-open-product data-product-id="p3">
+                        <picture>
+                            <source type="image/webp" srcset="assets/images/p3-thumb.webp">
+                            <source type="image/png" srcset="assets/images/p3-thumb.png">
+                            <source type="image/svg+xml" srcset="assets/images/p3-thumb.svg">
+                            <img src="assets/images/p3-thumb.png" alt="WeatherViz thumbnail" width="240" height="160" loading="lazy" decoding="async">
+                        </picture>
+                    </button>
+                    <div class="product-content">
+                        <h3 class="product-title">WeatherViz</h3>
+                        <p class="product-description">
+                            WeatherViz combines tidy interactive charts with exportable graphics for reports and presentations. Built for data storytellers.
+                        </p>
+                        <div class="product-tech">
+                            <span class="tech-tag">D3</span>
+                            <span class="tech-tag">SVG</span>
+                            <span class="tech-tag">Charts</span>
+                        </div>
+                        <div class="product-links">
+                            <a href="#" class="product-link">Live Demo</a>
+                            <a href="#" class="product-link">Source Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product detail modal (hidden) -->
+            <dialog id="productModal" class="product-modal" aria-hidden="true" aria-labelledby="modal-title">
+                <div style="max-width:720px;padding:1.5rem;">
+                    <button id="productModalClose" aria-label="Close product details" style="float:right;background:none;border:none;font-size:20px;cursor:pointer">×</button>
+                    <div style="display:flex;gap:1rem;align-items:flex-start;">
+                        <img id="modal-image" src="" alt="" style="width:220px;height:auto;border-radius:8px;display:none;flex:0 0 auto;margin-top:4px;">
+                        <div style="flex:1 1 auto;min-width:0;">
+                            <h3 id="modal-title">Product title</h3>
+                            <p id="modal-desc">Product long description goes here. Include features, tech stack, links to docs, and short case study highlights.</p>
+                        </div>
+                    </div>
+                    <h4 style="margin-top:1rem">Highlights</h4>
+                    <ul id="modal-highlights">
+                    </ul>
+                    <div style="margin-top:1.25rem;display:flex;gap:0.75rem;">
+                        <a id="modal-live" href="#" class="btn btn-secondary">Open Live Demo</a>
+                        <a id="modal-source" href="#" class="btn btn-secondary">View Source</a>
+                    </div>
+                </div>
+            </dialog>
+
+            <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              "name": "Samuel Wu Products",
+              "description": "Selected products and tools built by Samuel Wu.",
+              "itemListElement": [
+                {"@type":"ListItem","position":1,"url":"/products.html#p1","name":"Rapid Forms"},
+                {"@type":"ListItem","position":2,"url":"/products.html#p2","name":"TeamBoard"},
+                {"@type":"ListItem","position":3,"url":"/products.html#p3","name":"WeatherViz"}
+              ]
+            }
+            </script>
         </section>
     </main>
     <footer>
@@ -52,6 +206,6 @@
             <span>&copy; 2025 Samuel Wu</span>
         </div>
     </footer>
-    <script src="assets/main.js"></script>
+    <script src="assets/main.js" defer></script>
 </body>
 </html>
