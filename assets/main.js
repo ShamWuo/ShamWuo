@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
             "@type": "Organization",
             "name": "Samuel Wu",
             "url": window.location.origin,
-            "logo": window.location.origin + '/images/Icon.jpg'
+        "logo": window.location.origin + '/images/icon-512.png'
         };
         const s = document.createElement('script');
         s.type = 'application/ld+json';

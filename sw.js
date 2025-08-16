@@ -9,7 +9,7 @@ const PRECACHE_URLS = [
   '/assets/images/p1-thumb.svg',
   '/assets/images/p2-thumb.svg',
   '/assets/images/p3-thumb.svg',
-  '/images/moon.png'
+  '/images/icon-512.png'
 ];
 
 self.addEventListener('install', event => {
