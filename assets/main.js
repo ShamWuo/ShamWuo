@@ -56,10 +56,11 @@ document.addEventListener('DOMContentLoaded', function() {
         contactOverlay.classList.add('active');
         contactOverlay.setAttribute('aria-hidden', 'false');
     // mark main UI as hidden/inert for assistive tech
-    const main = document.querySelector('main');
+    const main = document.querySelector('main') || document.querySelector('body > .container') || document.querySelector('body');
     const nav = document.querySelector('.nav-container');
     if (main) main.setAttribute('aria-hidden', 'true');
     if (nav) nav.setAttribute('aria-hidden', 'true');
+    // add a class which the CSS uses to visually de-emphasize and disable background interactions
     document.body.classList.add('overlay-open');
         lockBodyScroll();
         // focus first focusable element (close button preferred)
@@ -72,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!contactOverlay) return;
         contactOverlay.classList.remove('active');
         contactOverlay.setAttribute('aria-hidden', 'true');
-    const main = document.querySelector('main');
+    const main = document.querySelector('main') || document.querySelector('body > .container') || document.querySelector('body');
     const nav = document.querySelector('.nav-container');
     if (main) main.removeAttribute('aria-hidden');
     if (nav) nav.removeAttribute('aria-hidden');
