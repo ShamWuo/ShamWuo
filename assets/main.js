@@ -19,19 +19,39 @@ window.addEventListener('scroll', function() {
     }
 });
 
-const observer = new IntersectionObserver(function(entries) {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
-    });
-}, { threshold: 0.1 });
+// Create an IntersectionObserver if available, otherwise provide a safe no-op
+let observer;
+try {
+    observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+} catch (e) {
+    // Fallback: provide a minimal observer-compatible object so code can call observe()
+    observer = {
+        observe: function() {},
+        disconnect: function() {}
+    };
+    console && console.warn && console.warn('IntersectionObserver unavailable or failed:', e);
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     // reveal animations
     document.querySelectorAll('.fade-in').forEach(el => {
-        observer.observe(el);
+        try { observer.observe(el); } catch (e) { /* ignore */ }
     });
+
+    // Hide the page loader now that DOM is ready. Waiting for `window.load` can
+    // keep the user on the loader if some external resource stalls; hiding here
+    // provides a fast, progressive reveal while still allowing the service
+    // worker / images to finish loading in the background.
+    try {
+        const loader = document.getElementById('pageLoader');
+        if (loader) setTimeout(() => loader.classList.add('hidden'), 300);
+    } catch (e) { /* best-effort */ }
 
     // contact overlay (improved)
     const contactOverlay = document.getElementById('contactOverlay');
