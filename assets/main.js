@@ -374,3 +374,29 @@ window.addEventListener('scroll', function() {
     });
 });
 
+// Safety fallback: ensure the page loader is hidden even if an earlier runtime
+// error prevents the normal load handler from running. This won't interfere
+// with the normal handler but guarantees the user doesn't stay stuck on the
+// loading screen.
+(function hideLoaderFallback() {
+    const hide = () => {
+        try {
+            const loader = document.getElementById('pageLoader');
+            if (loader && !loader.classList.contains('hidden')) {
+                loader.classList.add('hidden');
+            }
+        } catch (e) {
+            // swallow errors - best effort only
+            console && console.warn && console.warn('hideLoaderFallback:', e);
+        }
+    };
+
+    // If document is already complete, hide immediately
+    if (document.readyState === 'complete') {
+        hide();
+    }
+
+    // Also schedule a guaranteed hide after 4 seconds
+    setTimeout(hide, 4000);
+})();
+
