@@ -1,4 +1,5 @@
-const CACHE_NAME = 'shamwu-v1';
+// Bumped cache name to simulate an update for testing the skip-waiting flow
+const CACHE_NAME = 'shamwu-v3';
 const PRECACHE_URLS = [
   '/',
   '/index.html',
@@ -14,7 +15,19 @@ const PRECACHE_URLS = [
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_URLS))
+    caches.open(CACHE_NAME).then(cache => {
+      // Attempt to precache each URL individually so a single missing/404 asset
+      // doesn't cause the entire install to fail. We log failures and continue.
+      return Promise.all(PRECACHE_URLS.map(url =>
+        fetch(url, { cache: 'no-store' }).then(resp => {
+          if (!resp || !resp.ok) throw new Error('Fetch failed: ' + url);
+          return cache.put(url, resp.clone());
+        }).catch(err => {
+          console.warn('Failed to precache', url, err);
+          return Promise.resolve();
+        })
+      ));
+    })
   );
 });
 
@@ -26,6 +39,12 @@ self.addEventListener('activate', event => {
   );
   // Take control of uncontrolled clients immediately after activation
   event.waitUntil(self.clients.claim());
+  // Notify clients that this worker activated (useful for tests)
+  event.waitUntil(self.clients.matchAll().then(clients => {
+    clients.forEach(c => {
+      try { c.postMessage({ type: 'sw-activated', cache: CACHE_NAME }); } catch (e) { }
+    });
+  }));
 });
 
 self.addEventListener('fetch', event => {

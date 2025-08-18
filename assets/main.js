@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!reg || !reg.waiting) return;
             reg.waiting.postMessage({ type: 'SKIP_WAITING' });
             btn.disabled = true; btn.textContent = 'Refreshing...';
-            setTimeout(() => location.reload(true), 800);
+            setTimeout(() => location.reload(), 800);
         });
         // dismiss action
         dismiss.addEventListener('click', () => {
