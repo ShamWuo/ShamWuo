@@ -5,8 +5,20 @@ window.addEventListener('load', function() {
     if (loader) {
         setTimeout(() => {
             loader.classList.add('hidden');
+            loader.style.pointerEvents = 'none';
         }, 1500);
     }
+});
+
+// Defensive: if pageLoader wasn't hidden due to an earlier error, force-hide it
+document.addEventListener('DOMContentLoaded', function(){
+    try{
+        const loader = document.getElementById('pageLoader');
+        if (loader && !loader.classList.contains('hidden')){
+            loader.classList.add('hidden');
+            loader.style.pointerEvents = 'none';
+        }
+    }catch(e){}
 });
 
 window.addEventListener('scroll', function() {
@@ -39,8 +51,8 @@ try {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // reveal animations
-    document.querySelectorAll('.fade-in').forEach(el => {
+    // reveal animations (.fade-in and .slide-in-right)
+    document.querySelectorAll('.fade-in, .slide-in-right').forEach(el => {
         try { observer.observe(el); } catch (e) { /* ignore */ }
     });
 
@@ -59,10 +71,12 @@ document.addEventListener('DOMContentLoaded', function() {
     let lastContactTrigger = null;
 
     function lockBodyScroll() {
-        document.body.style.overflow = 'hidden';
+    var child = document.getElementById('child');
+    if (child) child.style.overflow = 'hidden';
     }
     function unlockBodyScroll() {
-        document.body.style.overflow = '';
+    var child = document.getElementById('child');
+    if (child) child.style.overflow = '';
     }
 
     function getFocusableWithin(container) {

@@ -10,8 +10,9 @@
         'contact-email': 'email',
         'contact-linkedin': 'linkedin',
         'contact-github': 'github',
-        'contact-instagram': 'instagram',
-        'contact-discord': 'discord'
+  'contact-instagram': 'instagram',
+  'contact-discord': 'discord',
+  'contact-twitter': 'twitter'
       };
       Object.keys(map).forEach(id => {
         const key = map[id];
