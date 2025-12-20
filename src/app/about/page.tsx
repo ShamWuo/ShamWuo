@@ -1,69 +1,212 @@
-"use client";
+import type { Metadata } from "next";
+import { AboutContent } from "./about-content";
 
-import { KineticText } from "@/components/ui/kinetic-text";
+export const metadata: Metadata = {
+    title: {
+        absolute: "About — Samuel Wu | Multidisciplinary Developer (Boulder, Colorado)",
+    },
+    description: "About Samuel Wu — Multidisciplinary Developer based in Boulder, Colorado. Full-stack engineer, AI automation specialist, and product builder who combines technical expertise with operational efficiency. Chinese-American software developer specializing in Next.js, TypeScript, and AI automation.",
+    keywords: [
+        "Samuel Wu",
+        "multidisciplinary developer",
+        "full-stack developer",
+        "AI automation",
+        "Boulder Colorado developer",
+        "software engineer",
+        "product builder",
+        "Next.js developer",
+        "TypeScript developer",
+        "SaaS builder",
+        "Chinese developer",
+        "Boulder tech",
+        "Chinese-American developer",
+        "freelance developer Boulder",
+        "contract developer Colorado",
+        "software consultant",
+    ],
+    authors: [{ name: "Samuel Wu" }],
+    creator: "Samuel Wu",
+    publisher: "Samuel Wu",
+    formatDetection: {
+        email: false,
+        address: false,
+        telephone: false,
+    },
+    metadataBase: new URL("https://samuelwu.me"),
+    alternates: {
+        canonical: "/about",
+        languages: {
+            "en-US": "/about",
+            "zh-CN": "/about",
+        },
+    },
+    openGraph: {
+        title: "About — Samuel Wu | Multidisciplinary Developer (Boulder, Colorado)",
+        description: "About Samuel Wu — Multidisciplinary Developer based in Boulder, Colorado. Full-stack engineer, AI automation specialist, and product builder who combines technical expertise with operational efficiency.",
+        url: "https://samuelwu.me/about",
+        siteName: "Samuel Wu",
+        locale: "en_US",
+        type: "website",
+        images: [
+            {
+                url: "/og-about.jpg",
+                width: 1200,
+                height: 630,
+                alt: "Samuel Wu - Multidisciplinary Developer",
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "About — Samuel Wu | Multidisciplinary Developer",
+        description: "About Samuel Wu — Multidisciplinary Developer based in Boulder, Colorado. Full-stack engineer, AI automation specialist, and product builder.",
+        images: ["/og-about.jpg"],
+    },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            "max-video-preview": -1,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+        },
+    },
+    verification: {
+        // Add verification codes if available
+        // google: "verification_token",
+        // yandex: "verification_token",
+    },
+};
 
 export default function AboutPage() {
+    const personSchema = {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Samuel Wu",
+        "alternateName": ["Samuel Wu", "吴"],
+        "givenName": "Samuel",
+        "familyName": "Wu",
+        "jobTitle": "Multidisciplinary Developer",
+        "description": "Multidisciplinary Developer based in Boulder, Colorado. Full-stack engineer, AI automation specialist, and product builder who combines technical expertise with operational efficiency.",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Boulder",
+            "addressRegion": "CO",
+            "postalCode": "80301",
+            "addressCountry": "US",
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "40.0150",
+            "longitude": "-105.2705",
+        },
+        "nationality": {
+            "@type": "Country",
+            "name": "United States",
+        },
+        "birthPlace": {
+            "@type": "Place",
+            "name": "China",
+        },
+        "url": "https://samuelwu.me",
+        "sameAs": [
+            // Add social profiles when available
+        ],
+        "knowsAbout": [
+            "Full-Stack Development",
+            "AI Automation",
+            "Next.js",
+            "TypeScript",
+            "Software Engineering",
+            "Product Development",
+            "SaaS",
+            "Web Development",
+            "React",
+            "Node.js",
+            "PostgreSQL",
+            "Supabase",
+            "Prisma",
+            "API Development",
+            "System Architecture",
+        ],
+        "hasOccupation": {
+            "@type": "Occupation",
+            "name": "Multidisciplinary Developer",
+            "occupationLocation": {
+                "@type": "City",
+                "name": "Boulder",
+                "addressRegion": "Colorado",
+                "addressCountry": "US",
+            },
+            "skills": [
+                "Full-Stack Development",
+                "AI Automation",
+                "TypeScript",
+                "Next.js",
+                "System Architecture",
+                "Product Development",
+            ],
+        },
+        "alumniOf": {
+            "@type": "Organization",
+            "name": "Software Development",
+        },
+    };
+
+    const breadcrumbSchema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://samuelwu.me",
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "About",
+                "item": "https://samuelwu.me/about",
+            },
+        ],
+    };
+
+    const profilePageSchema = {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "mainEntity": {
+            "@type": "Person",
+            "name": "Samuel Wu",
+            "jobTitle": "Multidisciplinary Developer",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Boulder",
+                "addressRegion": "CO",
+                "addressCountry": "US",
+            },
+        },
+        "url": "https://samuelwu.me/about",
+        "about": "Samuel Wu is a multidisciplinary developer based in Boulder, Colorado, specializing in full-stack engineering, AI automation, and product development.",
+    };
+
     return (
-        <div className="container min-h-screen py-12 md:py-24">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-
-                {/* Left Column: Narrative */}
-                <div className="space-y-12">
-                    <KineticText>
-                        <h1 className="text-4xl md:text-6xl font-medium tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                            Operator first. Developer second.
-                        </h1>
-                    </KineticText>
-
-                    <div className="space-y-8 text-lg text-muted-foreground leading-relaxed">
-                        <KineticText delay={0.1}>
-                            <p>
-                                I build stuff that solves real problems. Started in ops, where efficiency is everything. Learned to code because I needed tools that didn't exist yet.
-                            </p>
-                        </KineticText>
-                        <KineticText delay={0.2}>
-                            <p>
-                                Built and scaled micro-SaaS products by automating the boring stuff. Turns out that's a pretty good business model.
-                            </p>
-                        </KineticText>
-                        <KineticText delay={0.3}>
-                            <p>
-                                Now I combine full-stack engineering with AI automation to build things that actually make a difference—less admin work, better workflows, more revenue.
-                            </p>
-                        </KineticText>
-                    </div>
-                </div>
-
-                {/* Right Column: Skills & Context */}
-                <div className="space-y-12 lg:pt-24">
-
-                    <div className="space-y-6">
-                        <h3 className="text-xl font-medium text-foreground border-b border-white/10 pb-4">The Stack</h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <span className="text-sm text-foreground font-medium block">Core Engineering</span>
-                                <p className="text-sm text-muted-foreground">Next.js App Router, TypeScript, Prisma, Supabase, Tailwind, shadcn/ui</p>
-                            </div>
-                            <div className="space-y-2">
-                                <span className="text-sm text-foreground font-medium block">AI & Automation</span>
-                                <p className="text-sm text-muted-foreground">OpenAI APIs, agent workflows, n8n, Pipedream, Inngest</p>
-                            </div>
-                            <div className="space-y-2">
-                                <span className="text-sm text-foreground font-medium block">Systems</span>
-                                <p className="text-sm text-muted-foreground">Auth, Subscriptions, Billing, Webhooks, Background jobs</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="space-y-6">
-                        <h3 className="text-xl font-medium text-foreground border-b border-white/10 pb-4">Background</h3>
-                        <p className="text-muted-foreground">
-                            Classical piano training taught me that mastery comes from systems and repetition. Same approach applies to building software—structure and consistency matter.
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageSchema) }}
+            />
+            <AboutContent />
+        </>
     );
 }

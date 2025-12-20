@@ -1,50 +1,59 @@
-"use client";
-
-import { KineticText } from "@/components/ui/kinetic-text";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import type { Metadata } from "next";
+import { ContactContent } from "./contact-content";
 import { SITE_CONFIG } from "@/lib/constants";
 
+export const metadata: Metadata = {
+    title: "Contact — Let's Talk",
+    description: `Contact Samuel Wu, multidisciplinary developer based in Boulder, Colorado. Currently open to select projects. Email: ${SITE_CONFIG.email}`,
+    keywords: [
+        "contact Samuel Wu",
+        "hire developer Boulder",
+        "hire multidisciplinary developer",
+        "Boulder Colorado developer",
+        "freelance developer",
+        "software developer contact",
+    ],
+    openGraph: {
+        title: "Contact — Let's Talk | Samuel Wu",
+        description: "Contact Samuel Wu, multidisciplinary developer based in Boulder, Colorado. Currently open to select projects.",
+        url: "https://samuelwu.me/contact",
+        siteName: "Samuel Wu",
+        locale: "en_US",
+        type: "website",
+    },
+    alternates: {
+        canonical: "/contact",
+    },
+};
+
 export default function ContactPage() {
+    const contactPageSchema = {
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
+        "name": "Contact — Let's Talk",
+        "description": "Contact Samuel Wu, multidisciplinary developer based in Boulder, Colorado",
+        "url": "https://samuelwu.me/contact",
+        "mainEntity": {
+            "@type": "Person",
+            "name": "Samuel Wu",
+            "jobTitle": "Multidisciplinary Developer",
+            "email": SITE_CONFIG.email,
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Boulder",
+                "addressRegion": "CO",
+                "addressCountry": "US",
+            },
+        },
+    };
+
     return (
-        <div className="container min-h-screen py-12 md:py-24">
-            <div className="max-w-2xl mx-auto space-y-12">
-                <div className="space-y-6 text-center">
-                    <KineticText>
-                        <h1 className="text-4xl md:text-5xl font-medium tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                            Got a problem worth solving?
-                        </h1>
-                    </KineticText>
-                    <KineticText delay={0.1}>
-                        <p className="text-xl text-muted-foreground">
-                            Open to select projects. If you care about speed and getting things done, let's chat.
-                        </p>
-                    </KineticText>
-                </div>
-
-                <form className="space-y-6 border border-white/5 p-8 bg-white/5 backdrop-blur-sm rounded-lg" onSubmit={(e) => e.preventDefault()}>
-                    <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input id="email" type="email" placeholder="you@company.com" className="bg-black/20 border-white/10" required />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="message">Project Context</Label>
-                        <Textarea id="message" placeholder="Briefly describe the problem you are solving..." className="min-h-[150px] bg-black/20 border-white/10" required />
-                    </div>
-                    <Button size="lg" className="w-full bg-foreground text-background hover:opacity-90">
-                        Send Message
-                    </Button>
-                </form>
-
-                <div className="text-center">
-                    <p className="text-sm text-muted-foreground">Or email me directly at</p>
-                    <a href={`mailto:${SITE_CONFIG.email}`} className="text-lg font-medium text-foreground hover:underline underline-offset-4">
-                        {SITE_CONFIG.email}
-                    </a>
-                </div>
-            </div>
-        </div>
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema) }}
+            />
+            <ContactContent />
+        </>
     );
 }

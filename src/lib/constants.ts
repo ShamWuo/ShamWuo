@@ -2,7 +2,7 @@ export const SITE_CONFIG = {
     name: "Samuel Wu",
     role: "Builder · Founder · AI Automation Engineer",
     location: "Boulder, Colorado",
-    description: "I build stuff that makes money. AI automations, SaaS products, and websites that actually work. Fast, clear, results-focused.",
+    description: "I build and ship revenue-generating software, AI automations, and high-performance websites. I optimize for speed, clarity, and outcomes.",
     email: "samuel@example.com",
     socials: {
         github: "https://github.com",
@@ -10,40 +10,9 @@ export const SITE_CONFIG = {
         linkedin: "https://linkedin.com",
     },
     nav: [
-        { label: "Projects", href: "/projects" },
+        { label: "Work", href: "/work" },
         { label: "About", href: "/about" },
         { label: "Contact", href: "/contact" },
-    ],
-    personalProjects: [
-        {
-            title: "Game Project 1",
-            description: "A fun game built with [tech stack]. Features include [key features].",
-            tags: ["Game", "Unity", "C#"],
-            href: "#",
-            category: "game",
-        },
-        {
-            title: "Mobile App",
-            description: "iOS/Android app that solves [problem]. Built with React Native.",
-            tags: ["Mobile", "React Native", "iOS"],
-            href: "#",
-            category: "app",
-        },
-        {
-            title: "Web App",
-            description: "Interactive web application with [features]. Built with modern web tech.",
-            tags: ["Web", "React", "TypeScript"],
-            href: "#",
-            category: "web",
-        },
-    ],
-    otherInterests: [
-        {
-            title: "Piano",
-            description: "Classical piano performances and recordings.",
-            href: "/piano",
-            icon: "🎹",
-        },
     ],
     projects: [
         {

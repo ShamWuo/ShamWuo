@@ -70,17 +70,15 @@ export function ProjectCard({ title, description, tags, href, index }: ProjectCa
                 style={{
                     transformStyle: "preserve-3d",
                 }}
-                className="relative border border-white/10 bg-gradient-to-br from-black/30 via-black/20 to-black/30 overflow-hidden py-12 px-8 rounded-xl transition-all duration-300 hover:border-white/20 hover:shadow-lg hover:shadow-white/5"
+                className="relative border border-white/10 bg-black/20 overflow-hidden py-12 px-8 rounded-xl transition-colors duration-300 hover:border-white/20"
             >
                 {/* Spotlight Effect */}
                 <motion.div
                     className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100"
                     style={{
-                        background: useMotionTemplate`radial-gradient(650px circle at ${x}px ${y}px, rgba(255, 255, 255, 0.15), transparent 40%)`,
+                        background: useMotionTemplate`radial-gradient(650px circle at ${x}px ${y}px, rgba(255, 255, 255, 0.1), transparent 40%)`,
                     }}
                 />
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
                 <Link href={href} className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
                     <div className="flex-1 space-y-4">

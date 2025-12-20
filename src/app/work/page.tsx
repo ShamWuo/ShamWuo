@@ -1,37 +1,53 @@
-"use client";
+import type { Metadata } from "next";
+import { WorkContent } from "./work-content";
 
-import { KineticText } from "@/components/ui/kinetic-text";
-import { ProjectCard } from "@/components/ui/project-card";
-import { SITE_CONFIG } from "@/lib/constants";
+export const metadata: Metadata = {
+    title: "Work — Selected Projects",
+    description: "Selected case studies by Samuel Wu, multidisciplinary developer based in Boulder, Colorado. End-to-end execution from problem identification to revenue-generating solutions.",
+    keywords: [
+        "Samuel Wu portfolio",
+        "Samuel Wu projects",
+        "case studies",
+        "multidisciplinary developer work",
+        "Boulder Colorado developer",
+        "software projects",
+        "SaaS projects",
+        "AI automation projects",
+    ],
+    openGraph: {
+        title: "Work — Selected Projects | Samuel Wu",
+        description: "Selected case studies demonstrating end-to-end execution from problem identification to revenue-generating solutions.",
+        url: "https://samuelwu.me/work",
+        siteName: "Samuel Wu",
+        locale: "en_US",
+        type: "website",
+    },
+    alternates: {
+        canonical: "/work",
+    },
+};
 
 export default function WorkPage() {
-    return (
-        <div className="container min-h-screen py-12 md:py-24">
-            <div className="flex flex-col gap-16">
-                <div className="max-w-3xl space-y-6">
-                    <KineticText>
-                        <h1 className="text-4xl md:text-6xl font-medium tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                            What I've built.
-                        </h1>
-                    </KineticText>
-                    <KineticText delay={0.1}>
-                        <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-                            Case studies from problem to solution. Real projects, real results.
-                        </p>
-                    </KineticText>
-                </div>
+    const collectionPageSchema = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Work — Selected Projects",
+        "description": "Selected case studies by Samuel Wu",
+        "url": "https://samuelwu.me/work",
+        "about": {
+            "@type": "Person",
+            "name": "Samuel Wu",
+            "jobTitle": "Multidisciplinary Developer",
+        },
+    };
 
-                <div className="flex flex-col">
-                    {SITE_CONFIG.projects.map((project, index) => (
-                        <ProjectCard
-                            key={project.title}
-                            {...project}
-                            index={index}
-                            href={project.href}
-                        />
-                    ))}
-                </div>
-            </div>
-        </div>
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }}
+            />
+            <WorkContent />
+        </>
     );
 }
