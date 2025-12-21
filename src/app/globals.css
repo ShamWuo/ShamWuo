@@ -229,7 +229,7 @@
   animation: gradient 3s ease infinite;
 }
 
-/* Amber Mirage color palette utilities */
-.amber-mirage-glow {
-  box-shadow: 0 0 20px rgba(245, 158, 11, 0.2), 0 0 40px rgba(245, 158, 11, 0.1);
+/* Sapphire Veil color palette utilities */
+.sapphire-veil-glow {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.2), 0 0 40px rgba(59, 130, 246, 0.1);
 }
