@@ -155,12 +155,14 @@ function GalaxyStars() {
         />
       ))}
       
-      {/* Shooting stars - extremely fast with long faint trails */}
-      {Array.from({ length: 12 }).map((_, i) => {
-        const startX = Math.random() * 100;
-        const startY = Math.random() * 50;
-        const angle = 20 + Math.random() * 25; // Diagonal angle
-        const distance = 3000 + Math.random() * 2000; // Very long trail
+      {/* Shooting stars - line from top left to bottom right */}
+      {Array.from({ length: 8 }).map((_, i) => {
+        // Start from top-left area (off-screen)
+        const startX = -8 - Math.random() * 5; // Start off-screen left
+        const startY = -8 - Math.random() * 10; // Start off-screen top
+        // Angle for top-left to bottom-right (approximately 135 degrees)
+        const angle = 130 + Math.random() * 8; // ~135 degrees diagonal
+        const distance = 2500 + Math.random() * 1000; // Distance to travel diagonally
         
         return (
           <motion.div
@@ -178,33 +180,28 @@ function GalaxyStars() {
             }}
             animate={{
               x: [0, distance],
-              y: [0, distance * 0.35],
-              opacity: [0, 0.9, 0.7, 0.3, 0],
+              y: [0, distance * 0.8],
+              opacity: [0, 0.7, 0.5, 0],
             }}
             transition={{
-              duration: 0.4 + Math.random() * 0.2, // Extremely fast
+              duration: 2.5 + Math.random() * 1.5, // Slower, more visible
               repeat: Infinity,
-              delay: i * 1.5 + Math.random() * 2,
-              repeatDelay: 2 + Math.random() * 3, // Very frequent
+              delay: i * 4 + Math.random() * 5,
+              repeatDelay: 6 + Math.random() * 10, // Less frequent
               ease: "easeOut",
             }}
           >
-            {/* Bright star head with blue glow */}
-            <div className="absolute w-2.5 h-2.5 bg-white rounded-full blur-[2px]" 
-                 style={{ 
-                   boxShadow: '0 0 10px rgba(147, 197, 253, 1), 0 0 16px rgba(96, 165, 250, 0.8), 0 0 24px rgba(59, 130, 246, 0.5)' 
-                 }} />
-            {/* Long faint trail that spans most of screen */}
+            {/* Simple line - gradient from bright to transparent */}
             <div 
-              className="absolute bg-gradient-to-r from-cyan-300 via-blue-300/70 to-transparent"
+              className="absolute bg-gradient-to-r from-cyan-200/90 via-blue-300/70 to-transparent"
               style={{
                 width: '2px',
-                height: '600px',
-                top: '3px',
+                height: '200px',
+                top: '0',
                 left: '50%',
                 transform: 'translateX(-50%)',
-                filter: 'blur(1.5px)',
-                opacity: 0.6,
+                filter: 'blur(0.5px)',
+                boxShadow: '0 0 6px rgba(147, 197, 253, 0.5)',
               }}
             />
           </motion.div>
