@@ -24,33 +24,20 @@ const SELECTED_PROJECTS = [
   },
 ];
 
-// Animated gradient background component
+// Animated gradient background component - Amber Mirage palette
 function AnimatedGradient() {
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-      {/* Base gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-950/20 via-blue-950/20 to-cyan-950/20" />
+      {/* Base subtle gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-950/10 via-transparent to-amber-950/5" />
       
-      {/* Animated gradient orbs */}
+      {/* Top right corner - away from text */}
       <motion.div
-        className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-purple-500/30 via-pink-500/20 to-transparent blur-3xl"
+        className="absolute top-0 right-0 w-[800px] h-[800px] rounded-full bg-gradient-to-l from-amber-500/15 via-yellow-500/10 to-transparent blur-3xl"
         animate={{
-          x: [0, 100, 0],
-          y: [0, -50, 0],
-          scale: [1, 1.2, 1],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-      <motion.div
-        className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-cyan-500/30 via-blue-500/20 to-transparent blur-3xl"
-        animate={{
-          x: [0, -80, 0],
-          y: [0, 60, 0],
-          scale: [1, 1.3, 1],
+          x: [0, 50, 0],
+          y: [0, 30, 0],
+          scale: [1, 1.15, 1],
         }}
         transition={{
           duration: 25,
@@ -58,15 +45,32 @@ function AnimatedGradient() {
           ease: "easeInOut",
         }}
       />
+      
+      {/* Bottom left corner - away from text */}
       <motion.div
-        className="absolute top-1/2 right-0 w-[400px] h-[400px] rounded-full bg-gradient-to-r from-indigo-500/25 to-transparent blur-3xl"
+        className="absolute bottom-0 left-0 w-[700px] h-[700px] rounded-full bg-gradient-to-r from-amber-600/12 via-amber-400/8 to-transparent blur-3xl"
         animate={{
-          x: [0, -100, 0],
-          y: [0, 40, 0],
-          scale: [1, 1.1, 1],
+          x: [0, -40, 0],
+          y: [0, -50, 0],
+          scale: [1, 1.2, 1],
         }}
         transition={{
           duration: 30,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      
+      {/* Bottom right - subtle */}
+      <motion.div
+        className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full bg-gradient-to-t from-yellow-600/10 via-amber-500/8 to-transparent blur-3xl"
+        animate={{
+          x: [0, 60, 0],
+          y: [0, -30, 0],
+          scale: [1, 1.1, 1],
+        }}
+        transition={{
+          duration: 35,
           repeat: Infinity,
           ease: "easeInOut",
         }}
@@ -132,9 +136,9 @@ export function HomeContent() {
         </div>
       </div>
 
-      {/* Interactive cursor glow effect */}
+      {/* Interactive cursor glow effect - Amber */}
       <motion.div
-        className="fixed w-96 h-96 rounded-full bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-cyan-500/20 blur-3xl pointer-events-none z-[1]"
+        className="fixed w-96 h-96 rounded-full bg-gradient-to-r from-amber-500/15 via-yellow-500/10 to-amber-400/15 blur-3xl pointer-events-none z-[1]"
         style={{
           left: mousePosition.x - 192,
           top: mousePosition.y - 192,
@@ -153,39 +157,39 @@ export function HomeContent() {
       <div className="relative z-10 flex flex-col gap-24 pb-24">
         {/* Hero Section */}
         <section className="container pt-12 md:pt-24 lg:pt-32 relative">
-          {/* Decorative elements */}
+          {/* Decorative elements - positioned away from text */}
           <motion.div
-            className="absolute top-0 right-0 w-72 h-72 rounded-full bg-gradient-to-br from-purple-500/10 to-pink-500/10 blur-3xl"
+            className="absolute top-0 right-0 w-96 h-96 rounded-full bg-gradient-to-br from-amber-500/8 to-yellow-500/5 blur-3xl -mr-32 -mt-32"
             animate={{
               scale: [1, 1.2, 1],
-              opacity: [0.5, 0.8, 0.5],
+              opacity: [0.3, 0.6, 0.3],
             }}
             transition={{
-              duration: 4,
+              duration: 6,
               repeat: Infinity,
               ease: "easeInOut",
             }}
           />
           
-          <div className="max-w-4xl space-y-8 relative">
+          <div className="max-w-4xl space-y-8 relative z-10">
             <KineticText>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-tighter leading-[1.1] relative">
-                <span className="bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent animate-gradient">
+                <span className="text-foreground">
                   Hey, I'm Samuel.
                 </span>
                 <motion.div
-                  className="absolute -top-4 -right-4 text-6xl md:text-8xl"
+                  className="absolute -top-4 -right-4 md:-right-8 text-6xl md:text-8xl"
                   animate={{
                     rotate: [0, 10, -10, 0],
                     scale: [1, 1.1, 1],
                   }}
                   transition={{
-                    duration: 2,
+                    duration: 3,
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
                 >
-                  <SparklesIcon className="w-12 h-12 md:w-16 md:h-16 text-purple-400/50" />
+                  <SparklesIcon className="w-12 h-12 md:w-16 md:h-16 text-amber-400/40" />
                 </motion.div>
               </h1>
             </KineticText>
@@ -203,7 +207,7 @@ export function HomeContent() {
                   <Button 
                     asChild 
                     size="lg" 
-                    className="rounded-lg bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 text-white hover:from-purple-600 hover:via-pink-600 hover:to-cyan-600 font-medium px-8 text-base h-12 shadow-lg shadow-purple-500/50 border-0"
+                    className="rounded-lg bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-400 text-black hover:from-amber-600 hover:via-yellow-600 hover:to-amber-500 font-medium px-8 text-base h-12 shadow-lg shadow-amber-500/30 border-0"
                   >
                     <Link href="/projects">
                       Check out my work
@@ -234,27 +238,27 @@ export function HomeContent() {
         {/* Value Props */}
         <section className="container relative">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 py-12 relative">
-            {/* Background glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-cyan-500/5 rounded-3xl blur-3xl" />
+            {/* Background glow effect - Amber */}
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/3 via-yellow-500/3 to-amber-500/3 rounded-3xl blur-3xl" />
             
             {[
               {
                 icon: Terminal,
                 title: "Full-Stack Developer",
                 description: "I build web apps with Next.js, TypeScript, and modern tools. Everything's type-safe, scalable, and ready to go when you need it.",
-                gradient: "from-purple-500/20 to-purple-900/20",
+                gradient: "from-amber-500/15 to-amber-900/10",
               },
               {
                 icon: Zap,
                 title: "AI & Automation",
                 description: "Love building AI-powered tools that actually save time. I work with OpenAI, n8n, and other cool APIs to automate the boring stuff.",
-                gradient: "from-pink-500/20 to-pink-900/20",
+                gradient: "from-yellow-500/15 to-yellow-900/10",
               },
               {
                 icon: Layers,
                 title: "Fast & Focused",
                 description: "I move quickly and keep things simple. Most projects go from idea to working prototype in a matter of days, not months.",
-                gradient: "from-cyan-500/20 to-cyan-900/20",
+                gradient: "from-amber-600/15 to-amber-800/10",
               },
             ].map((item, index) => (
               <motion.div
@@ -279,7 +283,7 @@ export function HomeContent() {
                       delay: index * 0.2,
                     }}
                   >
-                    <item.icon className="w-10 h-10 text-foreground group-hover:text-purple-400 transition-colors" />
+                    <item.icon className="w-10 h-10 text-foreground group-hover:text-amber-400 transition-colors" />
                   </motion.div>
                   <h3 className="text-xl font-medium text-foreground mt-4">{item.title}</h3>
                   <p className="text-muted-foreground leading-relaxed">
@@ -298,7 +302,7 @@ export function HomeContent() {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-4xl font-medium tracking-tight bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent"
+              className="text-3xl md:text-4xl font-medium tracking-tight text-foreground"
             >
               Some Things I've Built
             </motion.h2>
