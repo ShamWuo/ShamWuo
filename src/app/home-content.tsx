@@ -157,9 +157,9 @@ function GalaxyStars() {
       
       {/* Shooting stars - line from top left to bottom right */}
       {Array.from({ length: 8 }).map((_, i) => {
-        // Start from top-left area (off-screen)
-        const startX = -8 - Math.random() * 5; // Start off-screen left
-        const startY = -8 - Math.random() * 10; // Start off-screen top
+        // Start from broad range - anywhere from top/left area
+        const startX = -15 + Math.random() * 30; // Start from left edge to 15% across screen
+        const startY = -15 + Math.random() * 40; // Start from top edge to 25% down screen
         // Angle for top-left to bottom-right (approximately 135 degrees)
         const angle = 130 + Math.random() * 8; // ~135 degrees diagonal
         const distance = 2500 + Math.random() * 1000; // Distance to travel diagonally
