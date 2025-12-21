@@ -14,6 +14,13 @@ export const SITE_CONFIG = {
         { label: "About", href: "/about" },
         { label: "Contact", href: "/contact" },
     ],
+    projectCategories: [
+        { id: "all", label: "All Projects", slug: "" },
+        { id: "apps", label: "Apps", slug: "apps" },
+        { id: "websites", label: "Websites", slug: "websites" },
+        { id: "games", label: "Games", slug: "games" },
+        { id: "tools", label: "Tools", slug: "tools" },
+    ],
     projects: [
         {
             title: "HOA Reply AI",
@@ -23,6 +30,7 @@ export const SITE_CONFIG = {
             tags: ["AI Agent", "Next.js", "Automation"],
             href: "/work/hoa-reply",
             featured: true,
+            category: "apps",
         },
         {
             title: "Certirise",
@@ -32,6 +40,7 @@ export const SITE_CONFIG = {
             tags: ["SaaS", "Compliance", "Stripe"],
             href: "/work/certirise",
             featured: true,
+            category: "apps",
         },
         {
             title: "Avelae",
@@ -41,6 +50,7 @@ export const SITE_CONFIG = {
             tags: ["E-commerce", "Operations", "Shopify"],
             href: "/work/avelae",
             featured: true,
+            category: "websites",
         },
         {
             title: "Clivora",
@@ -50,6 +60,37 @@ export const SITE_CONFIG = {
             tags: ["Video AI", "FFmpeg", "Cloud Functions"],
             href: "/work/clivora",
             featured: true,
+            category: "tools",
+        },
+        {
+            title: "Memory Game",
+            description: "A classic memory card matching game built with React and TypeScript.",
+            problem: "Need for a fun, interactive memory training game.",
+            outcome: "Engaging game with scoring system and difficulty levels.",
+            tags: ["React", "TypeScript", "Game"],
+            href: "/games/memory",
+            featured: true,
+            category: "games",
+        },
+        {
+            title: "Snake Game",
+            description: "A modern take on the classic Snake game with smooth animations.",
+            problem: "Creating an enjoyable retro-style game experience.",
+            outcome: "Smooth gameplay with responsive controls and high scores.",
+            tags: ["JavaScript", "Canvas", "Game"],
+            href: "/games/snake",
+            featured: true,
+            category: "games",
+        },
+        {
+            title: "Reaction Game",
+            description: "Test your reaction time with this fast-paced clicking game.",
+            problem: "Need for a simple, engaging reaction time test.",
+            outcome: "Fun game that tracks and displays reaction times.",
+            tags: ["React", "JavaScript", "Game"],
+            href: "/games/reaction",
+            featured: true,
+            category: "games",
         },
     ],
 };
