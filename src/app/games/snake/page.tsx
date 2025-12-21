@@ -140,8 +140,8 @@ export default function SnakeGame() {
                 }
             }
 
-            // Check self collision
-            if (checkCollision(head, newSnake)) {
+            // Check self collision BEFORE adding head (check new head position against current body, excluding old head)
+            if (checkCollision(head, prevSnake.slice(1))) {
                 if (!hasShield) {
                     setGameOver(true);
                     return prevSnake;
@@ -150,6 +150,7 @@ export default function SnakeGame() {
                 }
             }
 
+            // Add new head
             newSnake.unshift(head);
 
             // Check food collision
@@ -247,7 +248,6 @@ export default function SnakeGame() {
     const resetGame = () => {
         const startPos = { x: Math.floor(gridSize / 2), y: Math.floor(gridSize / 2) };
         setSnake([startPos]);
-        setFood(generateFood());
         setDirection("RIGHT");
         setGameOver(false);
         setScore(0);
@@ -256,8 +256,22 @@ export default function SnakeGame() {
         setHasShield(false);
         setDoublePoints(false);
         speedMultiplierRef.current = 1;
-        if (obstacleMode) generateObstacles();
-        else setObstacles([]);
+        if (obstacleMode) {
+            generateObstacles();
+            // Generate food after obstacles are set
+            setTimeout(() => {
+                setFood({
+                    x: Math.floor(Math.random() * gridSize),
+                    y: Math.floor(Math.random() * gridSize),
+                });
+            }, 100);
+        } else {
+            setObstacles([]);
+            setFood({
+                x: Math.floor(Math.random() * gridSize),
+                y: Math.floor(Math.random() * gridSize),
+            });
+        }
     };
 
     const currentTheme = THEMES[theme];

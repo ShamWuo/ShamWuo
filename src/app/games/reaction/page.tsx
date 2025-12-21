@@ -28,9 +28,6 @@ export default function ReactionGame() {
     const [round, setRound] = useState(0);
     const [difficulty, setDifficulty] = useState<Difficulty>("medium");
     const [theme, setTheme] = useState<Theme>("default");
-    const [challengeMode, setChallengeMode] = useState(false);
-    const [challengeRounds, setChallengeRounds] = useState(5);
-    const [challengeTimes, setChallengeTimes] = useState<number[]>([]);
     const [streak, setStreak] = useState(0);
     const [bestStreak, setBestStreak] = useState(0);
     const startTimeRef = useRef<number>(0);
@@ -66,16 +63,7 @@ export default function ReactionGame() {
         if (gameState === "ready") {
             const time = Date.now() - startTimeRef.current;
             setReactionTime(time);
-            
-            if (challengeMode) {
-                setChallengeTimes((prev) => [...prev, time]);
-                if (challengeTimes.length + 1 >= challengeRounds) {
-                    // Challenge complete
-                    setChallengeMode(false);
-                }
-            } else {
-                setTimes((prev) => [...prev, time]);
-            }
+            setTimes((prev) => [...prev, time]);
             
             setStreak((prev) => {
                 const newStreak = prev + 1;
@@ -97,18 +85,9 @@ export default function ReactionGame() {
         setTimes([]);
         setRound(0);
         setStreak(0);
-        setChallengeMode(false);
-        setChallengeTimes([]);
         if (timeoutRef.current) {
             clearTimeout(timeoutRef.current);
         }
-    };
-
-    const startChallenge = () => {
-        resetGame();
-        setChallengeMode(true);
-        setChallengeTimes([]);
-        startRound();
     };
 
     useEffect(() => {
@@ -123,13 +102,12 @@ export default function ReactionGame() {
         };
     }, []);
 
-    const currentTimes = challengeMode ? challengeTimes : times;
-    const averageTime = currentTimes.length > 0
-        ? Math.round(currentTimes.reduce((a, b) => a + b, 0) / currentTimes.length)
+    const averageTime = times.length > 0
+        ? Math.round(times.reduce((a, b) => a + b, 0) / times.length)
         : null;
     
-    const bestTime = currentTimes.length > 0 ? Math.min(...currentTimes) : null;
-    const worstTime = currentTimes.length > 0 ? Math.max(...currentTimes) : null;
+    const bestTime = times.length > 0 ? Math.min(...times) : null;
+    const worstTime = times.length > 0 ? Math.max(...times) : null;
 
     const currentTheme = THEMES[theme];
 
@@ -144,9 +122,7 @@ export default function ReactionGame() {
         if (gameState === "waiting") return "Wait for green...";
         if (gameState === "ready") return "CLICK NOW!";
         if (gameState === "too-early") return "Too early! Wait for green.";
-        return challengeMode && challengeTimes.length < challengeRounds
-            ? `Round ${challengeTimes.length + 1}/${challengeRounds} - Click to continue`
-            : "Click to try again";
+        return "Click to try again";
     };
 
     const getPerformanceRating = (time: number) => {
@@ -173,12 +149,12 @@ export default function ReactionGame() {
                             Reaction Time
                         </h1>
                         <p className="text-muted-foreground">
-                            Test your reaction speed with customizable difficulty and challenge modes!
+                            Test your reaction speed with customizable difficulty and themes!
                         </p>
                     </div>
 
                     {/* Customization */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 rounded-lg border border-white/10 bg-white/5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-lg border border-white/10 bg-white/5">
                         <div>
                             <label className="text-xs text-muted-foreground mb-1 block">Difficulty</label>
                             <select
@@ -204,18 +180,6 @@ export default function ReactionGame() {
                                 {Object.keys(THEMES).map((t) => (
                                     <option key={t} value={t}>{t}</option>
                                 ))}
-                            </select>
-                        </div>
-                        <div>
-                            <label className="text-xs text-muted-foreground mb-1 block">Challenge</label>
-                            <select
-                                value={challengeRounds}
-                                onChange={(e) => setChallengeRounds(parseInt(e.target.value))}
-                                className="w-full px-2 py-1 rounded bg-black/20 border border-white/10 text-sm"
-                            >
-                                <option value={5}>5 Rounds</option>
-                                <option value={10}>10 Rounds</option>
-                                <option value={20}>20 Rounds</option>
                             </select>
                         </div>
                     </div>
@@ -265,23 +229,6 @@ export default function ReactionGame() {
                         </div>
                     </div>
 
-                    {challengeMode && (
-                        <div className="p-4 rounded-lg bg-purple-500/20 border border-purple-500/50">
-                            <div className="flex items-center justify-between">
-                                <span className="text-sm font-medium text-purple-400">Challenge Mode</span>
-                                <span className="text-sm text-muted-foreground">
-                                    {challengeTimes.length} / {challengeRounds} rounds
-                                </span>
-                            </div>
-                            {challengeTimes.length >= challengeRounds && (
-                                <div className="mt-2 text-center">
-                                    <p className="text-lg font-medium text-foreground">
-                                        Challenge Complete! Average: {averageTime}ms
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-                    )}
 
                     <div className="space-y-4">
                         <button
@@ -297,13 +244,13 @@ export default function ReactionGame() {
                         </button>
                     </div>
 
-                    {currentTimes.length > 0 && (
+                    {times.length > 0 && (
                         <div className="p-4 rounded-lg bg-white/5 border border-white/10">
                             <h3 className="text-sm font-medium text-foreground mb-2">
                                 Recent times:
                             </h3>
                             <div className="flex flex-wrap gap-2">
-                                {currentTimes.slice(-15).reverse().map((time, index) => (
+                                {times.slice(-15).reverse().map((time, index) => (
                                     <span
                                         key={index}
                                         className={`px-3 py-1 rounded-full bg-white/5 text-sm ${
@@ -318,11 +265,8 @@ export default function ReactionGame() {
                     )}
 
                     <div className="flex gap-4">
-                        <Button onClick={startRound} className="flex-1" variant="outline" disabled={challengeMode}>
+                        <Button onClick={startRound} className="flex-1" variant="outline">
                             Next Round
-                        </Button>
-                        <Button onClick={startChallenge} className="flex-1" variant="outline">
-                            {challengeMode ? "Exit Challenge" : "Start Challenge"}
                         </Button>
                         <Button onClick={resetGame} className="flex-1">
                             Reset
@@ -333,7 +277,6 @@ export default function ReactionGame() {
                         <p>• Wait for the button to turn green</p>
                         <p>• Click as fast as you can when it turns green</p>
                         <p>• Don't click too early or you'll break your streak</p>
-                        <p>• Try challenge mode to test consistency</p>
                         <p>• Build your streak for bragging rights!</p>
                     </div>
                 </div>

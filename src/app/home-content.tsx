@@ -246,12 +246,12 @@ export function HomeContent() {
           
           <div className="max-w-4xl space-y-8 relative z-10">
             <KineticText>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-tighter leading-[1.1] relative pr-20 md:pr-24">
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-tighter leading-[1.1] relative pr-24 md:pr-32">
                 <span className="text-foreground">
                   Hey, I'm Samuel.
                 </span>
                 <motion.div
-                  className="absolute top-0 right-0 md:right-4 text-6xl md:text-8xl"
+                  className="absolute top-0 right-2 md:right-6 text-6xl md:text-8xl"
                   animate={{
                     rotate: [0, 10, -10, 0],
                     scale: [1, 1.1, 1],
@@ -347,10 +347,10 @@ export function HomeContent() {
                 <div className="relative">
                   <motion.div
                     animate={{
-                      rotate: [0, 5, -5, 0],
+                      rotate: [0, 2, -2, 0],
                     }}
                     transition={{
-                      duration: 3,
+                      duration: 4,
                       repeat: Infinity,
                       ease: "easeInOut",
                       delay: index * 0.2,
