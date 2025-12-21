@@ -10,7 +10,7 @@ export const SITE_CONFIG = {
         linkedin: "https://linkedin.com",
     },
     nav: [
-        { label: "Work", href: "/work" },
+        { label: "Projects", href: "/projects" },
         { label: "About", href: "/about" },
         { label: "Contact", href: "/contact" },
     ],
