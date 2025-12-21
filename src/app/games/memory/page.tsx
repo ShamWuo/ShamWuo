@@ -19,7 +19,7 @@ const DIFFICULTIES = {
 };
 
 type Card = {
-    id: number;
+    id: string;
     content: string;
     isFlipped: boolean;
     isMatched: boolean;
@@ -30,7 +30,7 @@ type Difficulty = keyof typeof DIFFICULTIES;
 
 export default function MemoryGame() {
     const [cards, setCards] = useState<Card[]>([]);
-    const [flippedCards, setFlippedCards] = useState<number[]>([]);
+    const [flippedCards, setFlippedCards] = useState<string[]>([]);
     const [moves, setMoves] = useState(0);
     const [matches, setMatches] = useState(0);
     const [isChecking, setIsChecking] = useState(false);
@@ -43,15 +43,26 @@ export default function MemoryGame() {
 
     const initializeCards = useCallback(() => {
         const items = THEMES[theme].slice(0, DIFFICULTIES[difficulty].pairs);
-        const cardPairs = [...items, ...items];
-        const shuffled = cardPairs
-            .map((content, index) => ({
-                id: index,
+        const cardPairs: Card[] = [];
+        
+        // Create pairs with unique IDs
+        items.forEach((content, pairIndex) => {
+            cardPairs.push({
+                id: `${content}-${pairIndex}-0`,
                 content,
                 isFlipped: false,
                 isMatched: false,
-            }))
-            .sort(() => Math.random() - 0.5);
+            });
+            cardPairs.push({
+                id: `${content}-${pairIndex}-1`,
+                content,
+                isFlipped: false,
+                isMatched: false,
+            });
+        });
+        
+        // Shuffle
+        const shuffled = cardPairs.sort(() => Math.random() - 0.5);
 
         setCards(shuffled);
         setFlippedCards([]);
@@ -60,6 +71,7 @@ export default function MemoryGame() {
         setTimer(0);
         setIsTimerActive(false);
         setHints(3);
+        setIsChecking(false);
     }, [theme, difficulty]);
 
     useEffect(() => {
@@ -68,85 +80,98 @@ export default function MemoryGame() {
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
-        if (isTimerActive && !isGameWon) {
+        if (isTimerActive) {
             interval = setInterval(() => {
                 setTimer((prev) => prev + 1);
             }, 1000);
         }
-        return () => clearInterval(interval);
+        return () => {
+            if (interval) clearInterval(interval);
+        };
     }, [isTimerActive]);
 
-    const handleCardClick = (cardId: number) => {
+    const handleCardClick = useCallback((cardId: string) => {
+        // Prevent clicks during checking or if already flipped/matched
         if (isChecking || flippedCards.length >= 2) return;
-        if (!isTimerActive) setIsTimerActive(true);
-
-        const card = cards[cardId];
-        if (card.isFlipped || card.isMatched) return;
-
-        const newFlippedCards = [...flippedCards, cardId];
-        setFlippedCards(newFlippedCards);
-
-        setCards((prevCards) =>
-            prevCards.map((c) =>
+        
+        setCards((prevCards) => {
+            const card = prevCards.find((c) => c.id === cardId);
+            if (!card || card.isFlipped || card.isMatched) return prevCards;
+            
+            // Start timer on first click
+            if (!isTimerActive) setIsTimerActive(true);
+            
+            // Update flipped cards list
+            const newFlippedCards = [...flippedCards, cardId];
+            setFlippedCards(newFlippedCards);
+            
+            // Flip the card
+            const updatedCards = prevCards.map((c) =>
                 c.id === cardId ? { ...c, isFlipped: true } : c
-            )
-        );
-
-        if (newFlippedCards.length === 2) {
-            setIsChecking(true);
-            setMoves((prev) => prev + 1);
-
-            setTimeout(() => {
-                const [firstId, secondId] = newFlippedCards;
-                const firstCard = cards[firstId];
-                const secondCard = cards[secondId];
-
-                if (firstCard.content === secondCard.content) {
-                    setCards((prevCards) =>
-                        prevCards.map((c) =>
-                            c.id === firstId || c.id === secondId
-                                ? { ...c, isMatched: true, isFlipped: true }
-                                : c
-                        )
-                    );
-                    setMatches((prev) => prev + 1);
-                } else {
-                    setCards((prevCards) =>
-                        prevCards.map((c) =>
-                            c.id === firstId || c.id === secondId
-                                ? { ...c, isFlipped: false }
-                                : c
-                        )
-                    );
-                }
-
-                setFlippedCards([]);
-                setIsChecking(false);
-            }, 1000);
-        }
-    };
+            );
+            
+            // If two cards are flipped, check for match
+            if (newFlippedCards.length === 2) {
+                setIsChecking(true);
+                setMoves((prev) => prev + 1);
+                
+                setTimeout(() => {
+                    setCards((currentCards) => {
+                        const firstCard = currentCards.find((c) => c.id === newFlippedCards[0]);
+                        const secondCard = currentCards.find((c) => c.id === newFlippedCards[1]);
+                        
+                        if (firstCard && secondCard && firstCard.content === secondCard.content) {
+                            // Match found
+                            setMatches((prev) => prev + 1);
+                            return currentCards.map((c) =>
+                                c.id === newFlippedCards[0] || c.id === newFlippedCards[1]
+                                    ? { ...c, isMatched: true, isFlipped: true }
+                                    : c
+                            );
+                        } else {
+                            // No match - flip back
+                            return currentCards.map((c) =>
+                                c.id === newFlippedCards[0] || c.id === newFlippedCards[1]
+                                    ? { ...c, isFlipped: false }
+                                    : c
+                            );
+                        }
+                    });
+                    
+                    setFlippedCards([]);
+                    setIsChecking(false);
+                }, 1000);
+            }
+            
+            return updatedCards;
+        });
+    }, [isChecking, flippedCards, isTimerActive]);
 
     const useHint = () => {
-        if (hints <= 0 || flippedCards.length > 0) return;
+        if (hints <= 0 || flippedCards.length > 0 || isChecking) return;
         
-        const unmatchedCards = cards.filter((c) => !c.isMatched && !c.isFlipped);
-        if (unmatchedCards.length < 2) return;
-
-        const randomCard = unmatchedCards[Math.floor(Math.random() * unmatchedCards.length)];
-        setCards((prevCards) =>
-            prevCards.map((c) =>
+        setCards((prevCards) => {
+            const unmatchedCards = prevCards.filter((c) => !c.isMatched && !c.isFlipped);
+            if (unmatchedCards.length < 2) return prevCards;
+            
+            const randomCard = unmatchedCards[Math.floor(Math.random() * unmatchedCards.length)];
+            setHints((prev) => prev - 1);
+            
+            // Temporarily flip the card
+            const updated = prevCards.map((c) =>
                 c.id === randomCard.id ? { ...c, isFlipped: true } : c
-            )
-        );
-        setHints((prev) => prev - 1);
-
-        setTimeout(() => {
-            setCards((prevCards) =>
-                prevCards.map((c) =>
-                    c.id === randomCard.id ? { ...c, isFlipped: false } : c
-                )
             );
-        }, 2000);
+            
+            setTimeout(() => {
+                setCards((currentCards) =>
+                    currentCards.map((c) =>
+                        c.id === randomCard.id ? { ...c, isFlipped: false } : c
+                    )
+                );
+            }, 2000);
+            
+            return updated;
+        });
     };
 
     const isGameWon = matches === DIFFICULTIES[difficulty].pairs;
@@ -260,7 +285,7 @@ export default function MemoryGame() {
                             <span className="text-sm text-muted-foreground">Hints: {hints}</span>
                             <Button
                                 onClick={useHint}
-                                disabled={hints <= 0 || flippedCards.length > 0}
+                                disabled={hints <= 0 || flippedCards.length > 0 || isChecking}
                                 size="sm"
                                 variant="outline"
                                 className="ml-2"
@@ -294,7 +319,7 @@ export default function MemoryGame() {
                             <button
                                 key={card.id}
                                 onClick={() => handleCardClick(card.id)}
-                                disabled={isChecking || card.isMatched}
+                                disabled={isChecking || card.isMatched || card.isFlipped}
                                 className={`
                                     aspect-square rounded-lg border-2 transition-all duration-300
                                     ${
@@ -303,7 +328,8 @@ export default function MemoryGame() {
                                             : "bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/10 hover:scale-105"
                                     }
                                     ${card.isMatched ? "opacity-50" : ""}
-                                    ${isChecking && !card.isFlipped ? "cursor-not-allowed" : ""}
+                                    ${isChecking && !card.isFlipped ? "cursor-not-allowed opacity-50" : ""}
+                                    ${card.isFlipped && !card.isMatched ? "cursor-pointer" : ""}
                                     flex items-center justify-center text-4xl
                                 `}
                             >

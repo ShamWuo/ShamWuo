@@ -34,7 +34,7 @@ export function CategoryTabs() {
                         {isActive && (
                             <motion.div
                                 layoutId="activeCategory"
-                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
+                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500"
                                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                             />
                         )}

@@ -75,7 +75,7 @@ export function CustomDropdown({
                         selected.map((item) => (
                             <span
                                 key={item}
-                                className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/10 text-foreground text-xs rounded-md border border-white/10"
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-blue-500/20 to-cyan-400/20 text-foreground text-xs rounded-md border border-blue-500/30"
                             >
                                 {item}
                                 {multiple && (
@@ -117,7 +117,7 @@ export function CustomDropdown({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute z-50 w-full mt-2 bg-black/95 border border-white/10 rounded-lg shadow-lg backdrop-blur-sm max-h-60 overflow-auto"
+                        className="absolute z-50 w-full mt-2 bg-black/95 border border-white/10 rounded-lg shadow-lg shadow-blue-500/10 backdrop-blur-sm max-h-60 overflow-auto"
                     >
                         <div className="p-2">
                             {options.length === 0 ? (
@@ -132,8 +132,8 @@ export function CustomDropdown({
                                             onClick={() => toggleOption(option)}
                                             className={cn(
                                                 "w-full px-3 py-2 text-left text-sm rounded-md transition-colors",
-                                                "hover:bg-white/10",
-                                                isSelected && "bg-white/10 text-foreground"
+                                                "hover:bg-blue-500/10",
+                                                isSelected && "bg-blue-500/10 text-foreground"
                                             )}
                                         >
                                             <div className="flex items-center gap-2">
@@ -142,12 +142,12 @@ export function CustomDropdown({
                                                         className={cn(
                                                             "w-4 h-4 border rounded flex items-center justify-center",
                                                             isSelected
-                                                                ? "bg-white border-white"
+                                                                ? "bg-blue-500 border-blue-500"
                                                                 : "border-white/30"
                                                         )}
                                                     >
                                                         {isSelected && (
-                                                            <svg className="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
+                                                            <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                                                                 <path
                                                                     fillRule="evenodd"
                                                                     d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"

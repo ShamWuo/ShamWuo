@@ -13,13 +13,13 @@ const SELECTED_PROJECTS = [
   {
     title: "HOA Reply AI",
     description: "AI system that automates HOA inboxes and reduces admin load by 85%.",
-    tags: ["AI Agent", "Next.js", "Automation"],
+    tags: ["Automation", "Productivity"],
     href: "/work/hoa-reply",
   },
   {
     title: "Certirise",
     description: "Compliance SaaS for recurring license renewals with automated tracking.",
-    tags: ["SaaS", "Compliance", "Stripe"],
+    tags: ["Productivity", "Compliance"],
     href: "/work/certirise",
   },
 ];
@@ -79,30 +79,103 @@ function AnimatedGradient() {
   );
 }
 
-// Floating particles component
-function FloatingParticles() {
-  const particles = Array.from({ length: 20 }, (_, i) => i);
+// Galaxy stars component - Sapphire Veil
+function GalaxyStars() {
+  const stars = Array.from({ length: 150 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 2 + 0.5,
+    twinkleDelay: Math.random() * 5,
+    twinkleDuration: 2 + Math.random() * 3,
+  }));
+
+  const largeStars = Array.from({ length: 20 }, (_, i) => ({
+    id: `large-${i}`,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 3 + 2,
+    twinkleDelay: Math.random() * 4,
+    twinkleDuration: 3 + Math.random() * 4,
+  }));
   
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-      {particles.map((i) => (
+      {/* Regular stars */}
+      {stars.map((star) => (
         <motion.div
-          key={i}
-          className="absolute w-1 h-1 rounded-full bg-white/20"
+          key={star.id}
+          className="absolute rounded-full bg-white"
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            left: `${star.x}%`,
+            top: `${star.y}%`,
+            width: `${star.size}px`,
+            height: `${star.size}px`,
+            boxShadow: `0 0 ${star.size * 2}px rgba(147, 197, 253, 0.6), 0 0 ${star.size * 4}px rgba(96, 165, 250, 0.3)`,
           }}
           animate={{
-            y: [0, -100, 0],
-            opacity: [0.2, 0.8, 0.2],
-            scale: [1, 1.5, 1],
+            opacity: [0.3, 1, 0.3],
+            scale: [0.8, 1.2, 0.8],
           }}
           transition={{
-            duration: 3 + Math.random() * 4,
+            duration: star.twinkleDuration,
             repeat: Infinity,
-            delay: Math.random() * 2,
+            delay: star.twinkleDelay,
             ease: "easeInOut",
+          }}
+        />
+      ))}
+      
+      {/* Large bright stars */}
+      {largeStars.map((star) => (
+        <motion.div
+          key={star.id}
+          className="absolute rounded-full bg-white"
+          style={{
+            left: `${star.x}%`,
+            top: `${star.y}%`,
+            width: `${star.size}px`,
+            height: `${star.size}px`,
+            boxShadow: `
+              0 0 ${star.size * 2}px rgba(147, 197, 253, 0.8),
+              0 0 ${star.size * 4}px rgba(96, 165, 250, 0.5),
+              0 0 ${star.size * 6}px rgba(59, 130, 246, 0.3)
+            `,
+          }}
+          animate={{
+            opacity: [0.5, 1, 0.5],
+            scale: [0.9, 1.3, 0.9],
+          }}
+          transition={{
+            duration: star.twinkleDuration,
+            repeat: Infinity,
+            delay: star.twinkleDelay,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+      
+      {/* Shooting stars occasionally */}
+      {Array.from({ length: 3 }).map((_, i) => (
+        <motion.div
+          key={`shooting-${i}`}
+          className="absolute w-1 h-20 bg-gradient-to-b from-white via-cyan-300 to-transparent"
+          style={{
+            left: `${20 + Math.random() * 60}%`,
+            top: `${Math.random() * 30}%`,
+            rotate: '45deg',
+          }}
+          animate={{
+            x: [0, 800],
+            y: [0, 800],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            delay: i * 10 + Math.random() * 5,
+            repeatDelay: 15 + Math.random() * 10,
+            ease: "easeOut",
           }}
         />
       ))}
@@ -126,8 +199,8 @@ export function HomeContent() {
       {/* Animated gradient backgrounds */}
       <AnimatedGradient />
       
-      {/* Floating particles */}
-      <FloatingParticles />
+      {/* Galaxy stars */}
+      <GalaxyStars />
 
       {/* Background Layer: Fixed Shapes */}
       <div className="fixed inset-0 z-0 pointer-events-none">

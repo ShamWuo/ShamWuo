@@ -72,11 +72,11 @@ export function ProjectCard({ title, description, tags, href, index }: ProjectCa
                 }}
                 className="relative border border-white/10 bg-black/20 overflow-hidden py-12 px-8 rounded-xl transition-colors duration-300 hover:border-white/20"
             >
-                {/* Spotlight Effect */}
+                {/* Spotlight Effect - Sapphire */}
                 <motion.div
                     className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100"
                     style={{
-                        background: useMotionTemplate`radial-gradient(650px circle at ${x}px ${y}px, rgba(255, 255, 255, 0.1), transparent 40%)`,
+                        background: useMotionTemplate`radial-gradient(650px circle at ${x}px ${y}px, rgba(96, 165, 250, 0.15), rgba(59, 130, 246, 0.1), transparent 40%)`,
                     }}
                 />
 
