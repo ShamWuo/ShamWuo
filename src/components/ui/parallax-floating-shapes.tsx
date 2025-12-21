@@ -20,7 +20,7 @@ interface ShapeConfig {
 const SHAPES: ShapeConfig[] = [
     {
         id: 1,
-        className: "w-32 h-32 md:w-48 md:h-48 rounded-full bg-white/5 backdrop-blur-3xl border border-white/10 mix-blend-overlay",
+        className: "w-32 h-32 md:w-48 md:h-48 rounded-full bg-blue-500/5 backdrop-blur-3xl border border-blue-400/20 mix-blend-overlay",
         initialX: 0.9,
         initialY: 0.1,
         mass: 1.0,
@@ -28,7 +28,7 @@ const SHAPES: ShapeConfig[] = [
     },
     {
         id: 2,
-        className: "w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/20 shadow-[0_8px_32px_0_rgba(255,255,255,0.05)]",
+        className: "w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-cyan-500/5 backdrop-blur-2xl border border-cyan-400/20 shadow-[0_8px_32px_0_rgba(59,130,246,0.1)]",
         initialX: 0.05,
         initialY: 0.4,
         mass: 0.8,
@@ -36,7 +36,7 @@ const SHAPES: ShapeConfig[] = [
     },
     {
         id: 3,
-        className: "w-16 h-16 md:w-24 md:h-24 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl skew-y-12",
+        className: "w-16 h-16 md:w-24 md:h-24 rounded-xl bg-blue-400/10 backdrop-blur-md border border-cyan-400/20 shadow-2xl skew-y-12",
         initialX: 0.85,
         initialY: 0.8,
         mass: 0.6,
@@ -45,7 +45,7 @@ const SHAPES: ShapeConfig[] = [
     },
     {
         id: 4, // Orb
-        className: "w-20 h-20 md:w-28 md:h-28 rounded-full bg-white/5 blur-2xl border border-white/10",
+        className: "w-20 h-20 md:w-28 md:h-28 rounded-full bg-cyan-500/5 blur-2xl border border-blue-400/10",
         initialX: 0.15,
         initialY: 0.2,
         mass: 1.2,
@@ -53,16 +53,15 @@ const SHAPES: ShapeConfig[] = [
     },
     {
         id: 5, // Tiny Cube
-        className: "w-12 h-12 md:w-16 md:h-16 rounded-lg bg-white/5 backdrop-blur-xl border border-white/10 opacity-60",
+        className: "w-12 h-12 md:w-16 md:h-16 rounded-lg bg-blue-500/5 backdrop-blur-xl border border-cyan-400/10 opacity-60",
         initialX: 0.7,
         initialY: 0.5,
         mass: 0.4,
         rotationSpeed: 0.5,
     },
-    // ID 6 (Capsule) Removed
     {
-        id: 7, // Prism
-        className: "w-8 h-8 md:w-12 md:h-12 border-2 border-white/10 bg-white/5 backdrop-blur-sm",
+        id: 6, // Prism
+        className: "w-10 h-10 md:w-14 md:h-14 border-2 border-blue-400/10 bg-cyan-500/5 backdrop-blur-sm",
         initialX: 0.45,
         initialY: 0.15,
         mass: 0.3,

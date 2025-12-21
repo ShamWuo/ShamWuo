@@ -6,8 +6,7 @@ import { KineticText } from "@/components/ui/kinetic-text";
 import { ProjectCard } from "@/components/ui/project-card";
 import { Button } from "@/components/ui/button";
 import { ParallaxFloatingShapes } from "@/components/ui/parallax-floating-shapes";
-import { motion, useMotionValue, useSpring } from "framer-motion";
-import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 const SELECTED_PROJECTS = [
   {
@@ -155,30 +154,61 @@ function GalaxyStars() {
         />
       ))}
       
-      {/* Shooting stars occasionally */}
-      {Array.from({ length: 3 }).map((_, i) => (
-        <motion.div
-          key={`shooting-${i}`}
-          className="absolute w-1 h-20 bg-gradient-to-b from-white via-cyan-300 to-transparent"
-          style={{
-            left: `${20 + Math.random() * 60}%`,
-            top: `${Math.random() * 30}%`,
-            rotate: '45deg',
-          }}
-          animate={{
-            x: [0, 800],
-            y: [0, 800],
-            opacity: [0, 1, 0],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            delay: i * 10 + Math.random() * 5,
-            repeatDelay: 15 + Math.random() * 10,
-            ease: "easeOut",
-          }}
-        />
-      ))}
+      {/* Shooting stars - extremely fast with long faint trails */}
+      {Array.from({ length: 12 }).map((_, i) => {
+        const startX = Math.random() * 100;
+        const startY = Math.random() * 50;
+        const angle = 20 + Math.random() * 25; // Diagonal angle
+        const distance = 3000 + Math.random() * 2000; // Very long trail
+        
+        return (
+          <motion.div
+            key={`shooting-${i}`}
+            className="absolute pointer-events-none"
+            style={{
+              left: `${startX}%`,
+              top: `${startY}%`,
+              rotate: `${angle}deg`,
+            }}
+            initial={{
+              x: 0,
+              y: 0,
+              opacity: 0,
+            }}
+            animate={{
+              x: [0, distance],
+              y: [0, distance * 0.35],
+              opacity: [0, 0.9, 0.7, 0.3, 0],
+            }}
+            transition={{
+              duration: 0.4 + Math.random() * 0.2, // Extremely fast
+              repeat: Infinity,
+              delay: i * 1.5 + Math.random() * 2,
+              repeatDelay: 2 + Math.random() * 3, // Very frequent
+              ease: "easeOut",
+            }}
+          >
+            {/* Bright star head with blue glow */}
+            <div className="absolute w-2.5 h-2.5 bg-white rounded-full blur-[2px]" 
+                 style={{ 
+                   boxShadow: '0 0 10px rgba(147, 197, 253, 1), 0 0 16px rgba(96, 165, 250, 0.8), 0 0 24px rgba(59, 130, 246, 0.5)' 
+                 }} />
+            {/* Long faint trail that spans most of screen */}
+            <div 
+              className="absolute bg-gradient-to-r from-cyan-300 via-blue-300/70 to-transparent"
+              style={{
+                width: '2px',
+                height: '600px',
+                top: '3px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                filter: 'blur(1.5px)',
+                opacity: 0.6,
+              }}
+            />
+          </motion.div>
+        );
+      })}
     </div>
   );
 }
@@ -202,7 +232,7 @@ export function HomeContent() {
       {/* Galaxy stars */}
       <GalaxyStars />
 
-      {/* Background Layer: Fixed Shapes */}
+      {/* Background Layer: Galaxy Floating Shapes with scroll physics */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 overflow-hidden">
           <ParallaxFloatingShapes />
