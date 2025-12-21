@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Terminal, Zap, Layers, Sparkles as SparklesIcon } from "lucide-react";
 import { KineticText } from "@/components/ui/kinetic-text";
@@ -239,18 +240,18 @@ export function HomeContent() {
         </div>
       </div>
 
-      {/* Interactive cursor glow effect - Sapphire */}
+      {/* Interactive cursor glow effect - Subtle Sapphire */}
       <motion.div
-        className="fixed w-96 h-96 rounded-full bg-gradient-to-r from-blue-500/15 via-cyan-400/10 to-sky-400/15 blur-3xl pointer-events-none z-[1]"
+        className="fixed w-64 h-64 rounded-full bg-gradient-to-r from-blue-500/5 via-cyan-400/4 to-sky-400/5 blur-3xl pointer-events-none z-[1]"
         style={{
-          left: mousePosition.x - 192,
-          top: mousePosition.y - 192,
+          left: mousePosition.x - 128,
+          top: mousePosition.y - 128,
         }}
         animate={{
-          scale: [1, 1.2, 1],
+          scale: [1, 1.1, 1],
         }}
         transition={{
-          duration: 2,
+          duration: 3,
           repeat: Infinity,
           ease: "easeInOut",
         }}
