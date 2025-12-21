@@ -2,17 +2,31 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Sparkles, Clock, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const EMOJIS = ["🎮", "🎯", "🎨", "🎭", "🎪", "🎬", "🎤", "🎧"];
+const THEMES = {
+    emojis: ["🎮", "🎯", "🎨", "🎭", "🎪", "🎬", "🎤", "🎧", "🎸", "🎺", "🎻", "🥁"],
+    animals: ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐮"],
+    food: ["🍎", "🍌", "🍇", "🍊", "🍓", "🍑", "🍒", "🥝", "🍉", "🍋", "🥭", "🍍"],
+    shapes: ["🔴", "🟠", "🟡", "🟢", "🔵", "🟣", "⚫", "⚪", "🟤", "🔶", "🔷", "🔸"],
+};
+
+const DIFFICULTIES = {
+    easy: { pairs: 4, name: "Easy", gridCols: 4 },
+    medium: { pairs: 8, name: "Medium", gridCols: 4 },
+    hard: { pairs: 12, name: "Hard", gridCols: 4 },
+};
 
 type Card = {
     id: number;
-    emoji: string;
+    content: string;
     isFlipped: boolean;
     isMatched: boolean;
 };
+
+type Theme = keyof typeof THEMES;
+type Difficulty = keyof typeof DIFFICULTIES;
 
 export default function MemoryGame() {
     const [cards, setCards] = useState<Card[]>([]);
@@ -20,13 +34,20 @@ export default function MemoryGame() {
     const [moves, setMoves] = useState(0);
     const [matches, setMatches] = useState(0);
     const [isChecking, setIsChecking] = useState(false);
+    const [theme, setTheme] = useState<Theme>("emojis");
+    const [difficulty, setDifficulty] = useState<Difficulty>("medium");
+    const [timer, setTimer] = useState(0);
+    const [isTimerActive, setIsTimerActive] = useState(false);
+    const [hints, setHints] = useState(3);
+    const [bestScore, setBestScore] = useState<number | null>(null);
 
     const initializeCards = useCallback(() => {
-        const cardPairs = [...EMOJIS, ...EMOJIS];
+        const items = THEMES[theme].slice(0, DIFFICULTIES[difficulty].pairs);
+        const cardPairs = [...items, ...items];
         const shuffled = cardPairs
-            .map((emoji, index) => ({
+            .map((content, index) => ({
                 id: index,
-                emoji,
+                content,
                 isFlipped: false,
                 isMatched: false,
             }))
@@ -36,14 +57,28 @@ export default function MemoryGame() {
         setFlippedCards([]);
         setMoves(0);
         setMatches(0);
-    }, []);
+        setTimer(0);
+        setIsTimerActive(false);
+        setHints(3);
+    }, [theme, difficulty]);
 
     useEffect(() => {
         initializeCards();
     }, [initializeCards]);
 
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+        if (isTimerActive && !isGameWon) {
+            interval = setInterval(() => {
+                setTimer((prev) => prev + 1);
+            }, 1000);
+        }
+        return () => clearInterval(interval);
+    }, [isTimerActive]);
+
     const handleCardClick = (cardId: number) => {
         if (isChecking || flippedCards.length >= 2) return;
+        if (!isTimerActive) setIsTimerActive(true);
 
         const card = cards[cardId];
         if (card.isFlipped || card.isMatched) return;
@@ -66,7 +101,7 @@ export default function MemoryGame() {
                 const firstCard = cards[firstId];
                 const secondCard = cards[secondId];
 
-                if (firstCard.emoji === secondCard.emoji) {
+                if (firstCard.content === secondCard.content) {
                     setCards((prevCards) =>
                         prevCards.map((c) =>
                             c.id === firstId || c.id === secondId
@@ -91,11 +126,60 @@ export default function MemoryGame() {
         }
     };
 
-    const isGameWon = matches === EMOJIS.length;
+    const useHint = () => {
+        if (hints <= 0 || flippedCards.length > 0) return;
+        
+        const unmatchedCards = cards.filter((c) => !c.isMatched && !c.isFlipped);
+        if (unmatchedCards.length < 2) return;
+
+        const randomCard = unmatchedCards[Math.floor(Math.random() * unmatchedCards.length)];
+        setCards((prevCards) =>
+            prevCards.map((c) =>
+                c.id === randomCard.id ? { ...c, isFlipped: true } : c
+            )
+        );
+        setHints((prev) => prev - 1);
+
+        setTimeout(() => {
+            setCards((prevCards) =>
+                prevCards.map((c) =>
+                    c.id === randomCard.id ? { ...c, isFlipped: false } : c
+                )
+            );
+        }, 2000);
+    };
+
+    const isGameWon = matches === DIFFICULTIES[difficulty].pairs;
+    const gridCols = DIFFICULTIES[difficulty].gridCols;
+
+    useEffect(() => {
+        if (isGameWon) {
+            setIsTimerActive(false);
+            const score = moves + timer;
+            if (!bestScore || score < bestScore) {
+                setBestScore(score);
+                localStorage.setItem(`memory-best-${difficulty}-${theme}`, score.toString());
+            }
+        }
+    }, [isGameWon, moves, timer, difficulty, theme, bestScore]);
+
+    useEffect(() => {
+        const saved = localStorage.getItem(`memory-best-${difficulty}-${theme}`);
+        if (saved) setBestScore(parseInt(saved));
+    }, [difficulty, theme]);
+
+    const getStars = () => {
+        const totalPairs = DIFFICULTIES[difficulty].pairs;
+        const perfectMoves = totalPairs;
+        const goodMoves = Math.ceil(totalPairs * 1.5);
+        if (moves <= perfectMoves) return 3;
+        if (moves <= goodMoves) return 2;
+        return 1;
+    };
 
     return (
         <div className="container min-h-screen py-12 md:py-24">
-            <div className="max-w-2xl mx-auto space-y-8">
+            <div className="max-w-3xl mx-auto space-y-8">
                 <Link href="/projects">
                     <Button variant="ghost" className="mb-8">
                         <ArrowLeft className="w-4 h-4 mr-2" />
@@ -106,35 +190,106 @@ export default function MemoryGame() {
                 <div className="space-y-6">
                     <div>
                         <h1 className="text-4xl font-medium tracking-tight text-foreground mb-2">
-                            Memory Game
+                            Memory Match
                         </h1>
                         <p className="text-muted-foreground">
-                            Find all matching pairs. Click cards to flip them.
+                            Find all matching pairs. Customize theme, difficulty, and use hints!
                         </p>
                     </div>
 
-                    <div className="flex items-center justify-between">
-                        <div className="text-lg">
-                            <span className="text-muted-foreground">Moves: </span>
-                            <span className="font-medium text-foreground">{moves}</span>
+                    {/* Customization */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-lg border border-white/10 bg-white/5">
+                        <div>
+                            <label className="text-sm font-medium text-foreground mb-2 block">Theme</label>
+                            <div className="flex gap-2 flex-wrap">
+                                {Object.keys(THEMES).map((t) => (
+                                    <button
+                                        key={t}
+                                        onClick={() => setTheme(t as Theme)}
+                                        className={`px-3 py-1 rounded text-sm transition-all ${
+                                            theme === t
+                                                ? "bg-white/20 text-foreground"
+                                                : "bg-white/5 text-muted-foreground hover:bg-white/10"
+                                        }`}
+                                    >
+                                        {t.charAt(0).toUpperCase() + t.slice(1)}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
-                        <div className="text-lg">
-                            <span className="text-muted-foreground">Matches: </span>
-                            <span className="font-medium text-foreground">
-                                {matches} / {EMOJIS.length}
-                            </span>
+                        <div>
+                            <label className="text-sm font-medium text-foreground mb-2 block">Difficulty</label>
+                            <div className="flex gap-2">
+                                {Object.keys(DIFFICULTIES).map((d) => (
+                                    <button
+                                        key={d}
+                                        onClick={() => setDifficulty(d as Difficulty)}
+                                        className={`px-3 py-1 rounded text-sm transition-all ${
+                                            difficulty === d
+                                                ? "bg-white/20 text-foreground"
+                                                : "bg-white/5 text-muted-foreground hover:bg-white/10"
+                                        }`}
+                                    >
+                                        {DIFFICULTIES[d as Difficulty].name}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Stats */}
+                    <div className="flex items-center justify-between flex-wrap gap-4">
+                        <div className="flex gap-6">
+                            <div>
+                                <span className="text-muted-foreground">Moves: </span>
+                                <span className="font-medium text-foreground">{moves}</span>
+                            </div>
+                            <div>
+                                <span className="text-muted-foreground">Matches: </span>
+                                <span className="font-medium text-foreground">
+                                    {matches} / {DIFFICULTIES[difficulty].pairs}
+                                </span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <Clock className="w-4 h-4 text-muted-foreground" />
+                                <span className="text-muted-foreground">{timer}s</span>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Sparkles className="w-4 h-4 text-yellow-400" />
+                            <span className="text-sm text-muted-foreground">Hints: {hints}</span>
+                            <Button
+                                onClick={useHint}
+                                disabled={hints <= 0 || flippedCards.length > 0}
+                                size="sm"
+                                variant="outline"
+                                className="ml-2"
+                            >
+                                Use Hint
+                            </Button>
                         </div>
                     </div>
 
                     {isGameWon && (
-                        <div className="p-4 rounded-lg bg-green-500/20 border border-green-500/50 text-center">
-                            <p className="text-lg font-medium text-green-400">
-                                🎉 You won! Completed in {moves} moves.
+                        <div className="p-6 rounded-lg bg-green-500/20 border border-green-500/50 text-center space-y-2">
+                            <p className="text-2xl font-medium text-green-400">🎉 You won!</p>
+                            <div className="flex items-center justify-center gap-1">
+                                {[...Array(getStars())].map((_, i) => (
+                                    <Star key={i} className="w-6 h-6 fill-yellow-400 text-yellow-400" />
+                                ))}
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Completed in {moves} moves and {timer} seconds
                             </p>
+                            {bestScore && (
+                                <p className="text-xs text-muted-foreground">
+                                    Best score: {bestScore} (moves + time)
+                                </p>
+                            )}
                         </div>
                     )}
 
-                    <div className="grid grid-cols-4 gap-3">
+                    <div className={`grid gap-3`} style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}>
                         {cards.map((card) => (
                             <button
                                 key={card.id}
@@ -144,31 +299,26 @@ export default function MemoryGame() {
                                     aspect-square rounded-lg border-2 transition-all duration-300
                                     ${
                                         card.isFlipped || card.isMatched
-                                            ? "bg-white/10 border-white/30"
-                                            : "bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/10"
+                                            ? "bg-white/10 border-white/30 scale-105"
+                                            : "bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/10 hover:scale-105"
                                     }
                                     ${card.isMatched ? "opacity-50" : ""}
                                     ${isChecking && !card.isFlipped ? "cursor-not-allowed" : ""}
                                     flex items-center justify-center text-4xl
                                 `}
                             >
-                                {card.isFlipped || card.isMatched ? card.emoji : "?"}
+                                {card.isFlipped || card.isMatched ? card.content : "?"}
                             </button>
                         ))}
                     </div>
 
-                    <Button onClick={initializeCards} className="w-full">
-                        New Game
-                    </Button>
-
-                    <div className="text-sm text-muted-foreground space-y-1">
-                        <p>• Click cards to flip them</p>
-                        <p>• Find matching pairs</p>
-                        <p>• Try to complete with as few moves as possible</p>
+                    <div className="flex gap-4">
+                        <Button onClick={initializeCards} className="flex-1">
+                            New Game
+                        </Button>
                     </div>
                 </div>
             </div>
         </div>
     );
 }
-
