@@ -164,7 +164,6 @@ export function ParallaxFloatingShapes() {
 
         const handleWheel = (e: WheelEvent) => {
             const now = performance.now();
-            lastScrollTime.current = now;
 
             // Apply impulse immediately without delay
             impulseVector.x = e.deltaX * 0.5; // Scale down for smoother movement
