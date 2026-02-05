@@ -70,8 +70,8 @@ const SHAPES: ShapeConfig[] = [
     },
 ];
 
-// Shared mutable object for impulse
-const impulseVector = { x: 0, y: 0 };
+// Shared mutable object for impulse - using refs for better performance
+const impulseVector = { x: 0, y: 0, timestamp: 0 };
 
 function PhysicsShape({ config }: { config: ShapeConfig }) {
     const x = useMotionValue(0);
@@ -102,21 +102,26 @@ function PhysicsShape({ config }: { config: ShapeConfig }) {
     useAnimationFrame((t, delta) => {
         if (!initialized.current) return;
 
-        // 1. Apply Impulse
-        const sensitivity = (1.5 - config.mass) * 0.05;
-        velocityX.current += impulseVector.x * sensitivity;
-        velocityY.current += impulseVector.y * sensitivity;
+        // Normalize delta to prevent janky movement on slow frames
+        const normalizedDelta = Math.min(delta, 33); // Cap at ~30fps minimum
+        
+        // 1. Apply Impulse (only if recent - within last 100ms)
+        const timeSinceImpulse = t - impulseVector.timestamp;
+        if (timeSinceImpulse < 100) {
+            const sensitivity = (1.5 - config.mass) * 0.08; // Increased sensitivity
+            velocityX.current += impulseVector.x * sensitivity;
+            velocityY.current += impulseVector.y * sensitivity;
+        }
 
-        // 2. Friction
-        const friction = 0.95;
+        // 2. Friction (slightly less aggressive for smoother movement)
+        const friction = 0.97;
         velocityX.current *= friction;
         velocityY.current *= friction;
 
-        // 3. Update Position
-        // Delta scaling ensures consistency across frame rates
-        // Typical delta is ~16ms. 0.1 multiplier scales it to pixels/frame roughly
-        positionX.current += velocityX.current * delta * 0.1;
-        positionY.current += velocityY.current * delta * 0.1;
+        // 3. Update Position - smoother delta handling
+        const speedMultiplier = normalizedDelta * 0.12; // Slightly increased for responsiveness
+        positionX.current += velocityX.current * speedMultiplier;
+        positionY.current += velocityY.current * speedMultiplier;
 
         // 4. Wrap Logic (Toroidal)
         const padding = 200;
@@ -152,27 +157,40 @@ function PhysicsShape({ config }: { config: ShapeConfig }) {
 
 export function ParallaxFloatingShapes() {
     const [mounted, setMounted] = useState(false);
+    const rafId = useRef<number | null>(null);
 
     useEffect(() => {
         setMounted(true);
 
-        let timeoutRef: NodeJS.Timeout;
-
         const handleWheel = (e: WheelEvent) => {
-            impulseVector.x = e.deltaX;
-            impulseVector.y = e.deltaY;
+            const now = performance.now();
+            lastScrollTime.current = now;
 
-            clearTimeout(timeoutRef);
-            timeoutRef = setTimeout(() => {
-                impulseVector.x = 0;
-                impulseVector.y = 0;
-            }, 50);
+            // Apply impulse immediately without delay
+            impulseVector.x = e.deltaX * 0.5; // Scale down for smoother movement
+            impulseVector.y = e.deltaY * 0.5;
+            impulseVector.timestamp = now;
+
+            // Cancel any pending animation frame
+            if (rafId.current) {
+                cancelAnimationFrame(rafId.current);
+            }
+
+            // Use requestAnimationFrame for smooth decay instead of setTimeout
+            rafId.current = requestAnimationFrame(() => {
+                // Let the physics naturally decay the impulse
+                // No need to manually reset - friction handles it
+            });
         };
 
-        window.addEventListener("wheel", handleWheel);
+        // Use passive listener for better scroll performance
+        window.addEventListener("wheel", handleWheel, { passive: true });
+        
         return () => {
             window.removeEventListener("wheel", handleWheel);
-            clearTimeout(timeoutRef);
+            if (rafId.current) {
+                cancelAnimationFrame(rafId.current);
+            }
         };
     }, []);
 

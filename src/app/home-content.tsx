@@ -11,16 +11,16 @@ import { motion } from "framer-motion";
 
 const SELECTED_PROJECTS = [
   {
-    title: "HOA Reply AI",
-    description: "AI system that automates HOA inboxes and reduces admin load by 85%.",
+    title: "Certirise",
+    description: "Full stack architecture with automated event systems and vector AI integration for compliance tracking.",
     tags: ["Automation", "Productivity"],
-    href: "/work/hoa-reply",
+    href: "https://github.com/ShamWuo/certirise",
   },
   {
-    title: "Certirise",
-    description: "Compliance SaaS for recurring license renewals with automated tracking.",
-    tags: ["Productivity", "Compliance"],
-    href: "/work/certirise",
+    title: "HOAreply",
+    description: "AI-powered inbox automation system for HOA management and resident communication.",
+    tags: ["Automation", "Productivity"],
+    href: "https://github.com/ShamWuo/HOAreply",
   },
 ];
 

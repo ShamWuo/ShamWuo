@@ -10,7 +10,6 @@ export async function generateMetadata({
     const categoryLabels: Record<string, string> = {
         apps: "Apps",
         websites: "Websites",
-        games: "Games",
         tools: "Tools",
     };
 

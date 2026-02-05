@@ -5,6 +5,11 @@ import { motion, useMotionTemplate, useMotionValue, useSpring } from "framer-mot
 import { ArrowUpRight } from "lucide-react";
 import { MouseEvent, useRef } from "react";
 
+// Check if href is external
+const isExternalLink = (href: string) => {
+    return href.startsWith("http://") || href.startsWith("https://");
+};
+
 interface ProjectCardProps {
     title: string;
     description: string;
@@ -80,29 +85,60 @@ export function ProjectCard({ title, description, tags, href, index }: ProjectCa
                     }}
                 />
 
-                <Link href={href} className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
-                    <div className="flex-1 space-y-4">
-                        <h3 className="text-2xl md:text-3xl font-medium tracking-tight text-foreground group-hover:text-white transition-colors">
-                            {title}
-                        </h3>
-                        <p className="text-muted-foreground max-w-xl text-base md:text-lg leading-relaxed">
-                            {description}
-                        </p>
-                        <div className="flex flex-wrap gap-2 pt-2">
-                            {tags.map((tag) => (
-                                <span key={tag} className="text-xs uppercase tracking-wider text-muted-foreground border border-white/10 px-2 py-1 rounded-full bg-black/40">
-                                    {tag}
-                                </span>
-                            ))}
+                {isExternalLink(href) ? (
+                    <a 
+                        href={href} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-6"
+                    >
+                        <div className="flex-1 space-y-4">
+                            <h3 className="text-2xl md:text-3xl font-medium tracking-tight text-foreground group-hover:text-white transition-colors">
+                                {title}
+                            </h3>
+                            <p className="text-muted-foreground max-w-xl text-base md:text-lg leading-relaxed">
+                                {description}
+                            </p>
+                            <div className="flex flex-wrap gap-2 pt-2">
+                                {tags.map((tag) => (
+                                    <span key={tag} className="text-xs uppercase tracking-wider text-muted-foreground border border-white/10 px-2 py-1 rounded-full bg-black/40">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="md:pt-2">
-                        <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white group-hover:bg-white group-hover:text-black transition-all">
-                            <ArrowUpRight className="w-5 h-5" />
+                        <div className="md:pt-2">
+                            <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white group-hover:bg-white group-hover:text-black transition-all">
+                                <ArrowUpRight className="w-5 h-5" />
+                            </div>
                         </div>
-                    </div>
-                </Link>
+                    </a>
+                ) : (
+                    <Link href={href} className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
+                        <div className="flex-1 space-y-4">
+                            <h3 className="text-2xl md:text-3xl font-medium tracking-tight text-foreground group-hover:text-white transition-colors">
+                                {title}
+                            </h3>
+                            <p className="text-muted-foreground max-w-xl text-base md:text-lg leading-relaxed">
+                                {description}
+                            </p>
+                            <div className="flex flex-wrap gap-2 pt-2">
+                                {tags.map((tag) => (
+                                    <span key={tag} className="text-xs uppercase tracking-wider text-muted-foreground border border-white/10 px-2 py-1 rounded-full bg-black/40">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="md:pt-2">
+                            <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white group-hover:bg-white group-hover:text-black transition-all">
+                                <ArrowUpRight className="w-5 h-5" />
+                            </div>
+                        </div>
+                    </Link>
+                )}
             </motion.div>
         </motion.div>
     );
