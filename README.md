@@ -7,7 +7,7 @@ I'm more of a perfectionist, and believe in bringing the best out of myself thro
 
 ### 💻 Currently Building
 
-* **[Wusic](https://github.com/your-username/wusic)**: A teacher–student music practice platform that helps musicians stay consistent while giving teachers real visibility into student progress, habits, and growth. (name not finalized)
+* **[Prasic](https://github.com/your-username/wusic)**: A teacher–student music practice platform that helps musicians stay consistent while giving teachers real visibility into student progress, habits, and growth. (name not finalized)
 * **[Neyro](https://github.com/your-username/neyro)**: A modern productivity app that tracks many parts of your life, including projects, areas, reasources, and more, all with AI integration. This is inspired by the PARA framework, and will give you a sense of clarity.
 
 ---
