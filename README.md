@@ -16,7 +16,6 @@ I'm more of a perfectionist, and believe in bringing the best out of myself thro
 
 - 📸 **Instagram**: [@1.swum](https://www.instagram.com/1.swum)
 - 💼 **LinkedIn**: [Samuel Wu](https://www.linkedin.com/in/samuel-wu-a4051937b/)
-- **Website**: [SamuelWu.me](https://samuelwu.me)
 
 ---
 
