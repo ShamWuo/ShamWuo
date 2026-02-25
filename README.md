@@ -1,6 +1,6 @@
 # Hi guys! I'm Sam Wu 🚀
 
-I'm a **Software Developer** based in **Boulder, CO**, dedicated to shipping work that will last as long as possible. I love doing reasearch, learning new things, and watching success scale. 
+I'm a **Software Developer** based in **Boulder, CO**, dedicated to shipping work that will work through extensive planning and testing. I love doing reasearch, learning new things, and watching success scale. 
 I'm more of a perfectionist, and believe in bringing the best out of myself through rigourous trial and error.
 
 ---
