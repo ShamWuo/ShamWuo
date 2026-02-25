@@ -11,10 +11,9 @@
 
 ---
 
-### 🌐 Connect With Me
+### 🌐 Socials
 
-- 📸 **Instagram**: [@1.swum](https://www.instagram.com/1.swum)
-- 💼 **LinkedIn**: [Samuel Wu](https://www.linkedin.com/in/samuel-wu-a4051937b/)
+- 📸 **Instagram**: [@1.swum](https://www.instagram.com/Sham.wuo)
 
 ---
 
