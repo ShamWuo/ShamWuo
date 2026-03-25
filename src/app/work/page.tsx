@@ -2,21 +2,19 @@ import type { Metadata } from "next";
 import { WorkContent } from "./work-content";
 
 export const metadata: Metadata = {
-    title: "Work — Selected Projects",
-    description: "Selected case studies by Samuel Wu, multidisciplinary developer based in Boulder, Colorado. End-to-end execution from problem identification to revenue-generating solutions.",
+    title: "Work — Projects & Open Source",
+    description: "Selected projects by Samuel Wu, Full-Stack Software Developer & Startup Founder. High-impact solutions ranging from AI diagnostic tools to community OS platforms.",
     keywords: [
-        "Samuel Wu portfolio",
-        "Samuel Wu projects",
-        "case studies",
-        "multidisciplinary developer work",
-        "Boulder Colorado developer",
-        "software projects",
-        "SaaS projects",
-        "AI automation projects",
+        "Samuel Wu work",
+        "ShamWuo github",
+        "AI projects",
+        "Next.js open source",
+        "Full-stack development case studies",
+        "Startup founder portfolio",
     ],
     openGraph: {
-        title: "Work — Selected Projects | Samuel Wu",
-        description: "Selected case studies demonstrating end-to-end execution from problem identification to revenue-generating solutions.",
+        title: "Work — Projects & Open Source | Samuel Wu",
+        description: "High-impact solutions ranging from AI diagnostic tools to community OS platforms.",
         url: "https://samuelwu.me/work",
         siteName: "Samuel Wu",
         locale: "en_US",
@@ -31,13 +29,13 @@ export default function WorkPage() {
     const collectionPageSchema = {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
-        "name": "Work — Selected Projects",
-        "description": "Selected case studies by Samuel Wu",
+        "name": "Work — Projects & Open Source",
+        "description": "Selected projects and open source contributions by Samuel Wu",
         "url": "https://samuelwu.me/work",
         "about": {
             "@type": "Person",
             "name": "Samuel Wu",
-            "jobTitle": "Multidisciplinary Developer",
+            "jobTitle": "Full-Stack Software Developer & Startup Founder",
         },
     };
 
