@@ -6,8 +6,8 @@
 
 ### 💻 Currently Building
 
-* **[Prasic](https://github.com/ShamWuo/prasic)**: A teacher–student music practice platform that helps musicians stay consistent while giving teachers real visibility into student progress, habits, and growth. 
-* **[Neyro](https://github.com/Shamwuo/neyro)**: A modern productivity app that tracks many parts of your life, including projects, areas, reasources, and more, all with AI integration. This is inspired by the PARA framework, and will give you a sense of clarity.
+* **[Spark](https://github.com/ShamWuo/spark)**: A fully user customizable journaling and productivity ecosystem. It features autonomous opportunity scouting to help turn reflections into actionable growth, providing a "Digital Study Sanctuary" for high-stakes focus.
+* **[Sintenel](https://github.com/Shamwuo/neyro)**: An AI-powered multi-agent security orchestrator designed for forensics and system hardening, built to handle complex vulnerability research and automated discovery.
 
 ---
 
