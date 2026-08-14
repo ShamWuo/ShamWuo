@@ -10,4 +10,4 @@ Ambitious software developer and systems engineer. Building highly reliable fram
 
 I take a highly analytical approach to crafting scalable, resilient solutions. I believe in rigorous planning, exhaustive testing, and the power of trial and error to build systems that scale seamlessly. Obsessed with the research; dedicated to the result.
 
-🔭 **Currently building** **[Blueprint Society](https://bluesc.org)** (also known as Blueprint Nexus), a comprehensive AI workspace that retains context. 
+🔭 **Currently building** **[Blueprint](https://bluesc.org)** (also known as Blueprint Nexus), a comprehensive AI workspace that retains context. 
